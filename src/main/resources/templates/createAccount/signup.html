@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>관리자 계정 생성</title>
+</head>
+<body>
+<h1>관리자 계정 생성</h1>
+<form action="/admin/signup" method="post">
+  <label>사용자 ID: <input type="text" name="userId" required></label><br>
+  <label>비밀번호: <input type="password" name="password" required></label><br>
+  <label>역할:
+    <select name="role">
+      <option value="root">루트 관리자</option>
+      <option value="general">일반 관리자</option>
+    </select>
+  </label><br>
+  <button type="submit">계정 생성</button>
+</form>
+</body>
+</html>
