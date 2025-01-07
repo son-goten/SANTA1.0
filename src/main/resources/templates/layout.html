@@ -2,37 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <title>SANTA1.0</title>
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
-    <link rel="icon" href="assets/img/kaiadmin/favicon.ico" type="image/x-icon" />
+    <title>SANTA1.0</title>
+
+    <link rel="icon" href="/assets/img/kaiadmin/favicon.ico" type="image/x-icon" />
     <!-- Fonts and icons -->
-    <script src="assets/js/plugin/webfont/webfont.min.js"></script>
-    <script>
-        WebFont.load({
-            google: {families: ["Public Sans:300,400,500,600,700"]},
-            custom: {
-                families: [
-                    "Font Awesome 5 Solid",
-                    "Font Awesome 5 Regular",
-                    "Font Awesome 5 Brands",
-                    "simple-line-icons",
-                ],
-                urls: ["assets/css/fonts.min.css"],
-            },
-            active: function () {
-                sessionStorage.fonts = true;
-            },
-        });
-    </script>
+    <script src="/assets/js/plugin/webfont/webfont.min.js"></script>
 
     <!-- CSS Files -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="assets/css/plugins.min.css"/>
-    <link rel="stylesheet" href="assets/css/kaiadmin.min.css"/>
-
-    <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link rel="stylesheet" href="assets/css/demo.css"/>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/assets/css/plugins.min.css"/>
+    <link rel="stylesheet" href="/assets/css/kaiadmin.min.css"/>
 </head>
 <body>
 <div class="wrapper">
@@ -45,13 +25,15 @@
                 <!-- Logo image -->
                 <a href="/product/productStatus" class="logo">
                     <img
-                            src="assets/img/santa/santaLogo.png"
+                            src="/assets/img/santa/santaLogo.png"
                             alt="navbar brand"
                             class="navbar-brand"
                             height="50"
                     />
-                    <span data-color="white">SANTA1.0</span>
+                    <span >SANTA1.0</span>
                 </a>
+
+                <!-- toggle -->
                 <div class="nav-toggle">
                     <button class="btn btn-toggle toggle-sidebar">
                         <i class="gg-menu-right"></i>
@@ -67,6 +49,7 @@
             <!-- End Logo Header -->
         </div>
 
+        <!-- sidebar -->
         <div class="sidebar-wrapper scrollbar scrollbar-inner">
             <div class="sidebar-content">
                 <ul class="nav nav-secondary">
@@ -87,7 +70,7 @@
                         <div class="collapse" id="products">
                             <ul class="nav nav-collapse">
                                 <li>
-                                    <a href="components/avatars.html">
+                                    <a href="/product/productStatus">
                                         <span class="sub-item">창고 재고 현황</span>
                                     </a>
                                 </li>
@@ -162,7 +145,7 @@
 
                     <!-- Menu4 -->
                     <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#forms">
+                        <a data-bs-toggle="collapse" href="#">
                             <i class="fas fa-pen-square"></i>
                             <p>발주 관리</p>
                             <span class="caret"></span>
@@ -648,7 +631,7 @@
         </div>
 
         <!-- content -->
-        <div class="container">
+        <div class="container" >
             <div class="page-inner" layout:fragment="content">
 
             </div>
@@ -681,39 +664,64 @@
 
 </div>
 <!-- JS -->
-<!--   Core JS Files   -->
-<script src="assets/js/core/jquery-3.7.1.min.js"></script>
-<script src="assets/js/core/popper.min.js"></script>
-<script src="assets/js/core/bootstrap.min.js"></script>
+<!-- Bootstrap core JS-->
+<script src="/assets/js/core/jquery-3.7.1.min.js"></script>
+<script src="/assets/js/core/popper.min.js"></script>
+<script src="/assets/js/core/bootstrap.min.js"></script>
+
+<!-- axios 비동기 통신용 -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <!-- jQuery Scrollbar -->
-<script src="assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<script src="/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
 
 <!-- Chart JS -->
-<script src="assets/js/plugin/chart.js/chart.min.js"></script>
+<script src="/assets/js/plugin/chart.js/chart.min.js"></script>
 
 <!-- Chart Circle -->
-<script src="assets/js/plugin/chart-circle/circles.min.js"></script>
+<script src="/assets/js/plugin/chart-circle/circles.min.js"></script>
 
 <!-- Datatables -->
-<script src="assets/js/plugin/datatables/datatables.min.js"></script>
+<script src="/assets/js/plugin/datatables/datatables.min.js"></script>
 
 <!-- Bootstrap Notify -->
-<script src="assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
+<script src="/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
 
 <!-- jQuery Vector Maps -->
-<script src="assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
-<script src="assets/js/plugin/jsvectormap/world.js"></script>
+<script src="/assets/js/plugin/jsvectormap/jsvectormap.min.js"></script>
+<script src="/assets/js/plugin/jsvectormap/world.js"></script>
 
 <!-- Sweet Alert -->
-<script src="assets/js/plugin/sweetalert/sweetalert.min.js"></script>
+<script src="/assets/js/plugin/sweetalert/sweetalert.min.js"></script>
 
 <!-- Kaiadmin JS -->
-<script src="assets/js/kaiadmin.min.js"></script>
+<script src="/assets/js/kaiadmin.min.js"></script>
 
 <!-- Kaiadmin DEMO methods, don't include it in your project! -->
-<script src="assets/js/setting-demo.js"></script>
-<script src="assets/js/demo.js"></script>
+<script src="/assets/js/setting-demo.js"></script>
+<script src="/assets/js/demo.js"></script>
+
+<!-- Core theme JS-->
+<script th:src="@{/js/scripts.js}"></script>
+<th:block layout:fragment="script">
+    <script>
+        WebFont.load({
+            google: {families: ["Public Sans:300,400,500,600,700"]},
+            custom: {
+                families: [
+                    "Font Awesome 5 Solid",
+                    "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands",
+                    "simple-line-icons",
+                ],
+                urls: ["/assets/css/fonts.min.css"],
+            },
+            active: function () {
+                sessionStorage.fonts = true;
+            },
+        });
+    </script>
+</th:block>
 
 </body>
 </html>
