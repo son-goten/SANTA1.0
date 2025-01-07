@@ -1,17 +1,17 @@
-package com.example.santa.inventory.controller;
+package com.example.santa.outgoing.controller;
 
-import com.example.santa.inventory.service.InventoryService;
+import com.example.santa.outgoing.service.OutgoingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/inventory")
+@RequestMapping("/outgoing")
 @RequiredArgsConstructor
 @Log4j2
-public class InventoryController {
+public class OutgoingController {
 
-    private final InventoryService inventoryService;
+    private final OutgoingService outgoingService;
 
 }
