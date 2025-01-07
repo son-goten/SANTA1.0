@@ -44,16 +44,26 @@
 		location VARCHAR(255) NOT NULL
 	);
 
-	-- 6. Administrators 테이블
-	CREATE TABLE Administrators (
-		admin_id INT AUTO_INCREMENT PRIMARY KEY, -- 관리자 ID (고유)
-		user_id VARCHAR(50) UNIQUE NOT NULL, -- 로그인용 사용자 ID (중복 불가)
-		password VARCHAR(255) NOT NULL, -- 로그인용 비밀번호 (암호화 필요) --> 주일님 설계
-		role ENUM('root', 'general') NOT NULL, -- 관리자 역할 (루트 관리자, 일반 관리자)
-		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP -- 생성일
-	);
+    CREATE TABLE EmployeeRoles (
+        employee_code VARCHAR(15) PRIMARY KEY,            -- 사원코드 (고유)
+        role ENUM('root', 'general') NOT NULL             -- 역할 (루트 관리자, 일반 관리자)
+    );
 
-	-- 7. Products 테이블
+	-- 6. Administrators 테이블
+    CREATE TABLE Administrators (
+            admin_id INT AUTO_INCREMENT PRIMARY KEY,          -- 관리자 ID (고유)
+            user_id VARCHAR(50) UNIQUE NOT NULL,              -- 로그인용 사용자 ID (중복 불가)
+            password VARCHAR(255) NOT NULL,                   -- 로그인용 비밀번호 (암호화 필요)
+            employee_code VARCHAR(50) NOT NULL,               -- 사원코드
+            role ENUM('root', 'general') NOT NULL,            -- 관리자 역할 (루트 관리자, 일반 관리자)
+            name VARCHAR(100) NOT NULL,                       -- 관리자 이름
+            email VARCHAR(100) UNIQUE NOT NULL,               -- 이메일 (중복 불가)
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,   -- 생성일
+            CONSTRAINT fk_employee_code FOREIGN KEY (employee_code) REFERENCES EmployeeRoles(employee_code)
+    );
+
+
+    -- 7. Products 테이블
 	CREATE TABLE Products (
 		product_id INT AUTO_INCREMENT PRIMARY KEY,
 		name VARCHAR(255) NOT NULL,

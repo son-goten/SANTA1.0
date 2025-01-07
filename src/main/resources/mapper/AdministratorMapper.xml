@@ -2,8 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.santa.createAccount.mapper.AdministratorMapper">
-    <insert id="insertAdministrator">
-        INSERT INTO Administrators (user_id, password, role)
-        VALUES (#{userId}, #{password}, #{role})
+
+    <!-- 사원코드로 역할 조회 -->
+    <select id="findRoleByEmployeeCode" resultType="string" parameterType="string">
+        SELECT role
+        FROM EmployeeRoles
+        WHERE employee_code = #{employeeCode}
+    </select>
+
+    <!-- 관리자 정보 삽입 -->
+    <insert id="insertAdministrator" parameterType="com.example.santa.createAccount.vo.AdministratorVO">
+        INSERT INTO Administrators (user_id, password, employee_code, name, email, role)
+        VALUES (#{userId}, #{password}, #{employeeCode}, #{name}, #{email}, #{role});
     </insert>
+
+    <!-- ID 중복 확인 -->
+    <select id="countByUserId" resultType="int" parameterType="string">
+        SELECT COUNT(*)
+        FROM Administrators
+        WHERE user_id = #{userId};
+    </select>
 </mapper>
