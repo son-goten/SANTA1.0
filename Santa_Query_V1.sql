@@ -159,6 +159,13 @@ CREATE TABLE Boards (
     FOREIGN KEY (author_id) REFERENCES Administrators(admin_id) ON DELETE CASCADE, -- 작성자 삭제 시 연쇄 삭제
     FOREIGN KEY (parent_id) REFERENCES Boards(board_id) ON DELETE CASCADE -- 부모 게시글 삭제 시 댓글도 삭제
 );
+-- 15. 패스워드 리셋 토큰 테이블
+    CREATE TABLE password_reset_tokens (
+                                           id INT AUTO_INCREMENT PRIMARY KEY,
+                                           email VARCHAR(255) NOT NULL,
+                                           token VARCHAR(255) NOT NULL,
+                                           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
 
 -- 1. Categories 테이블
 INSERT INTO Categories (name, description) VALUES
