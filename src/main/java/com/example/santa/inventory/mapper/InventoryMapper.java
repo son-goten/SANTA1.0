@@ -1,4 +1,4 @@
-package com.example.santa.inventory.dao;
+package com.example.santa.inventory.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 

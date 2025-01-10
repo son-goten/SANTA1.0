@@ -1,6 +1,6 @@
 package com.example.santa.inventory.service;
 
-import com.example.santa.inventory.dao.InventoryMapper;
+import com.example.santa.inventory.mapper.InventoryMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

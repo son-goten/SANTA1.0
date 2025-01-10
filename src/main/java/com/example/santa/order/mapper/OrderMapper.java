@@ -1,4 +1,4 @@
-package com.example.santa.order.dao;
+package com.example.santa.order.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 

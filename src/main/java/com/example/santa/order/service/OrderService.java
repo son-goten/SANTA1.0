@@ -1,7 +1,7 @@
 package com.example.santa.order.service;
 
 
-import com.example.santa.order.dao.OrderMapper;
+import com.example.santa.order.mapper.OrderMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
