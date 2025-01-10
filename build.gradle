@@ -89,4 +89,3 @@ configurations.all {
     exclude group: 'ch.qos.logback', module: 'logback-classic'
     exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging' // Spring Boot 기본 로깅 제외
 }
-
