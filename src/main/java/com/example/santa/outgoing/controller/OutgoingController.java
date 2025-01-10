@@ -22,13 +22,12 @@ public class OutgoingController {
     private final OutgoingService outgoingService;
 
     @GetMapping("outgoingRead")
-    public String outgoing(Model model) {
+    public String readOutgoing(Model model) {
         List<OutgoingDetailsDTO> list = outgoingService.findAllOutgoing();
         System.out.println("list >>>>> " + list);
-        if (list.size() > 0) {
-            model.addAttribute("list", list);
-        }
-        return "outgoing/outgoingRead";
+        model.addAttribute("outgoings", list);
+
+        return "/outgoing/outgoingRead";
     }
 
 }

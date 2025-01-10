@@ -14,7 +14,9 @@ public class OutgoingService {
     private final OutgoingMapper outgoingMapper;
 
     public List<OutgoingDetailsDTO> findAllOutgoing(){
-        return outgoingMapper.findAllOutgoing();
+        List <OutgoingDetailsDTO> outgoings = outgoingMapper.findAllOutgoing();
+        System.out.println("outgoings >>>>>>>>>>>> " + outgoings);
+        return outgoings;
     }
 
     // 2. 지점별 출고 조회
