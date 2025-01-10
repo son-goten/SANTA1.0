@@ -4,7 +4,6 @@ import com.example.santa.incoming.service.IncomingService;
 import com.example.santa.incoming.vo.IncomingDTO;
 import com.example.santa.incoming.vo.IncomingVO;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +13,6 @@ import java.util.List;
 @Controller
 @RequestMapping("incoming")
 @RequiredArgsConstructor
-@Log4j2
 public class IncomingController {
 
     private final IncomingService incomingService;

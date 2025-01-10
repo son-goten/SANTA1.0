@@ -7,7 +7,6 @@ import org.mybatis.spring.annotation.MapperScan;
 
 import java.util.List;
 
-@MapperScan("resources/mapper/incoming")
 @Mapper
 public interface IncomingMapper {
     // 입고 조회
