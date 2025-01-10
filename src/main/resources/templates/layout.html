@@ -49,7 +49,7 @@
                             class="navbar-brand"
                             height="50"
                     />
-                    <span style="font-size: 25px" >SANTA1.0</span>
+                    <span class="text-white fs-4" >SANTA1.0</span>
                 </a>
 
                 <!-- toggle -->
@@ -171,16 +171,21 @@
 
                     <!-- Menu4 -->
                     <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#shipment">
+                        <a data-bs-toggle="collapse" href="#transit">
                             <i class="fas fa-truck"></i>
                             <p>배송 관리</p>
                             <span class="caret"></span>
                         </a>
-                        <div class="collapse" id="shipment">
+                        <div class="collapse" id="transit">
                             <ul class="nav nav-collapse">
                                 <li>
-                                    <a class="sidebar-link" href="">
+                                    <a class="sidebar-link" href="/transit/transitRead">
                                         <span class="sub-item">배송 조회</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="sidebar-link" href="/transit/transitApprove">
+                                        <span class="sub-item">배송 승인</span>
                                     </a>
                                 </li>
                             </ul>
@@ -214,6 +219,11 @@
                         </a>
                         <div class="collapse" id="dash">
                             <ul class="nav nav-collapse">
+                                <li>
+                                    <a class="sidebar-link" href="">
+                                        <span class="sub-item">전체 통계</span>
+                                    </a>
+                                </li>
                                 <li>
                                     <a class="sidebar-link" href="/inventory/statistics">
                                         <span class="sub-item">창고 재고 통계</span>
@@ -576,12 +586,11 @@
 
         //sidebar toggle func
         function addSidebar() {
-        // 현재 URL 가져오기
-        const currentPath = location.pathname;
+            // 현재 URL 가져오기
+            const currentPath = location.pathname;
 
-        // 모든 사이드바 링크 가져오기
-        const sidebarLinks = document.querySelectorAll(".sidebar-link");
-
+            // 모든 사이드바 링크 가져오기
+            const sidebarLinks = document.querySelectorAll(".sidebar-link");
 
             // 링크 중 현재 URL과 일치하는 항목에 'active' 추가
             sidebarLinks.forEach(link => {
@@ -591,8 +600,6 @@
                     if (parentCollapse) {
                         parentCollapse.classList.add("show"); // 부모 메뉴 펼치기
                     }
-                } else {
-                    link.classList.remove("active");
                 }
             });
         };
