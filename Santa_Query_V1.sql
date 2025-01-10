@@ -44,9 +44,10 @@
 		location VARCHAR(255) NOT NULL
 	);
 
+    -- 5.5. 사원코드- 권한 연결테이블
     CREATE TABLE EmployeeRoles (
-        employee_code VARCHAR(15) PRIMARY KEY,            -- 사원코드 (고유)
-        role ENUM('root', 'general') NOT NULL             -- 역할 (루트 관리자, 일반 관리자)
+                                   employee_code VARCHAR(15) PRIMARY KEY,            -- 사원코드 (고유)
+                                   role ENUM('root', 'general') NOT NULL             -- 역할 (루트 관리자, 일반 관리자)
     );
 
 	-- 6. Administrators 테이블
@@ -134,17 +135,20 @@
 	);
 
 	-- 13. Outgoing 테이블
-	CREATE TABLE Outgoing (
-		outgoing_id INT AUTO_INCREMENT PRIMARY KEY,
-		warehouse_id INT NOT NULL,
-		product_id INT, -- NULL 가능으로 변경
-		order_id INT, -- 주문 ID와 연결
-		quantity INT NOT NULL CHECK (quantity > 0), -- 출고 수량은 0보다 커야 함
-		outgoing_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-		FOREIGN KEY (warehouse_id) REFERENCES Warehouses(warehouse_id) ON DELETE CASCADE,
-		FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE SET NULL, -- 제품 삭제 시 NULL 처리
-		FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE SET NULL
-	);
+    CREATE TABLE Outgoing (
+                              outgoing_id INT AUTO_INCREMENT PRIMARY KEY,
+                              warehouse_id INT NOT NULL,
+                              product_id INT, -- NULL 가능으로 변경
+                              order_id INT, -- 주문 ID와 연결
+                              branch_id INT, -- 지점 ID와 연결
+                              quantity INT NOT NULL CHECK (quantity > 0), -- 출고 수량은 0보다 커야 함
+                              outgoing_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+                              status ENUM('대기', '완료', '취소') NOT NULL,
+                              FOREIGN KEY (warehouse_id) REFERENCES Warehouses(warehouse_id) ON DELETE CASCADE,
+                              FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE SET NULL, -- 제품 삭제 시 NULL 처리
+                              FOREIGN KEY (order_id) REFERENCES Orders(order_id) ON DELETE SET NULL,
+                              FOREIGN KEY (branch_id) REFERENCES Orders(branch_id) ON DELETE SET NULL
+    );
 
 -- 14. Boards 테이블
 CREATE TABLE Boards (
@@ -159,7 +163,24 @@ CREATE TABLE Boards (
     FOREIGN KEY (author_id) REFERENCES Administrators(admin_id) ON DELETE CASCADE, -- 작성자 삭제 시 연쇄 삭제
     FOREIGN KEY (parent_id) REFERENCES Boards(board_id) ON DELETE CASCADE -- 부모 게시글 삭제 시 댓글도 삭제
 );
--- 15. 패스워드 리셋 토큰 테이블
+
+-- 15. Transit 테이블
+    CREATE TABLE Transit (
+                             transit_id INT AUTO_INCREMENT PRIMARY KEY,
+                             outgoing_id INT NOT NULL,
+                             warehouse_id INT,
+                             branch_id INT,
+                             product_id INT,
+                             quantity INT NOT NULL CHECK (quantity > 0),
+                             transit_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+                             status ENUM('배송대기', '배송완료', '배송취소', '배송중') NOT NULL,
+                             FOREIGN KEY (outgoing_id) REFERENCES Outgoing(outgoing_id) ON DELETE CASCADE,
+                             FOREIGN KEY (warehouse_id) REFERENCES Warehouses(warehouse_id) ON DELETE SET NULL, -- 제품 삭제 시 NULL 처리
+                             FOREIGN KEY (branch_id) REFERENCES Branches(branch_id) ON DELETE SET NULL,
+                             FOREIGN KEY (product_id) REFERENCES Products(product_id) ON DELETE SET NULL
+    );
+
+-- 16. 패스워드 리셋 토큰 테이블
     CREATE TABLE password_reset_tokens (
                                            id INT AUTO_INCREMENT PRIMARY KEY,
                                            email VARCHAR(255) NOT NULL,
@@ -207,6 +228,12 @@ INSERT INTO Branches (name, location) VALUES
 ('대구헬스센터', '대구광역시 동구 동대구역'),
 ('광주헬스센터', '광주광역시 남구 봉선동');
 
+-- 5.5
+INSERT INTO EmployeeRoles (employee_code, role) VALUES
+('EMP001', 'root'),    -- 루트 관리자 권한
+('EMP002', 'general'), -- 일반 관리자 권한
+('EMP003', 'general'); -- 일반 관리자 권한
+
 -- 6. Administrators 테이블
 INSERT INTO Administrators (user_id, password, role) VALUES
 ('admin1', 'password1', 'root'),
@@ -252,19 +279,17 @@ INSERT INTO Incoming (warehouse_id, product_id, supplier_id, quantity) VALUES
 (4, 5, 5, 100);
 
 -- 13. Outgoing 테이블
-INSERT INTO Outgoing (warehouse_id, product_id, order_id, quantity) VALUES
-(1, 1, 1, 50),
-(2, 3, 2, 100),
-(4, 5, 3, 50);
+INSERT INTO Outgoing (warehouse_id, product_id, order_id, branch_id, quantity, status) VALUES
+(3, 2, 1, 1, 80, '대기'),
+(4, 3, 3, 2, 90, '완료'),
+(1, 4, 2, 3, 40, '취소');
 
--- 게시판 샘플 데이터 삽입
-INSERT INTO Boards (board_type, author_id, title, content) VALUES
-('NOTICE', 1, '창고 점검 공지', '모든 창고는 매주 재고 점검을 완료해주세요.'),
-('GENERAL', 2, '추천 건강 제품', '가장 좋아하는 영양제를 공유해주세요.'),
-('GENERAL', 3, '프로틴 섭취법', '운동 후 프로틴 섭취 방법에 대해 논의합니다.');
+-- 게시판 샘플 데이터 삽입, 댓글 데이터 삽입
+-- 일단 생략
 
--- 댓글 데이터 삽입 (Boards 테이블에 댓글 추가)
-INSERT INTO Boards (board_type, author_id, content, parent_id) VALUES
-('GENERAL', 2, '3200개 한번에 주문 가능한가요?', 2), -- '추천 건강 제품' 게시글의 댓글
-('GENERAL', 3, '적재시 실온 보관 가능한가요?', 3), -- '프로틴 섭취법' 게시글의 댓글
-('NOTICE', 4, '공지 확인 완료했습니다.', 1); -- '창고 점검 공지' 게시글의 댓글
+-- 15. Transit 테이블
+    INSERT INTO Transit (outgoing_id, warehouse_id, branch_id, product_id, quantity, status) VALUES
+    (1, 3, 1, 2, 80, '배송중'),
+    (2, 4, 2, 3, 90, '배송대기'),
+    (3, 1, 3, 4, 40, '배송취소')
+    ;

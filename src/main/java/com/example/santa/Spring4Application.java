@@ -31,11 +31,11 @@ public class Spring4Application implements CommandLineRunner {
         // 가변 매개 변수의 값은 배열로 들어온다.
         // s2.length는 이때 2
         // application.properties에서 server.port 값 읽기
-        String port = environment.getProperty("server.port", "8080"); // 기본값 8080
+        String port = environment.getProperty("server.port", "8888"); // 기본값 8080
         // 애플리케이션 시작 후 콘솔에 링크 출력
         System.out.println("========================================");
         System.out.println("Application is running at:");
-        System.out.println("http://localhost:8888");
+        System.out.println("http://localhost:8888/login");
         System.out.println("========================================");
     }
 

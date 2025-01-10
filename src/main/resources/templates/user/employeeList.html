@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<body>
+<div class="page-inner" layout:fragment="content">
+    <h2>직원 관리</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>사원 코드</th>
+            <th>이름</th>
+            <th>권한</th>
+            <th>이메일</th>
+            <th>액션</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee : ${employees}">
+            <td th:text="${employee.employeeCode}"></td>
+            <td th:text="${employee.name}"></td>
+            <td th:text="${employee.role}"></td>
+            <td th:text="${employee.email}"></td>
+            <td>
+                <form th:action="@{/employee/updateRole}" method="post" style="display:inline-block;">
+                    <input type="hidden" name="employeeCode" th:value="${employee.employeeCode}">
+                    <select name="newRole">
+                        <option value="root">root</option>
+                        <option value="general">general</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">권한 변경</button>
+                </form>
+                <form th:action="@{/employee/delete}" method="post" style="display:inline-block;">
+                    <input type="hidden" name="employeeCode" th:value="${employee.employeeCode}">
+                    <button type="submit" class="btn btn-danger">삭제</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
