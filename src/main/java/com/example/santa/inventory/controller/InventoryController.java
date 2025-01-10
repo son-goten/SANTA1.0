@@ -14,14 +14,14 @@ public class InventoryController {
 
     private final InventoryService inventoryService;
 
-    //창고별 재고 관리 페이지
+    //창고별 재고 관리
     @GetMapping("warehouseManagement")
     public String warehouseManagement(Model model) {
 
         return "inventory/warehouseManagement";
     }
 
-    //품목별 재고 관리 페이지
+    //품목별 재고 관리
     @GetMapping("categoryManagement")
     public String categoryManagement(Model model) {
 
@@ -35,11 +35,11 @@ public class InventoryController {
         return "inventory/historyManagement";
     }
 
-    //창고 재고 통계
-    @GetMapping("warehouseStatistics")
-    public String warehouseStatistics(Model model) {
+    //창고 재고
+    @GetMapping("statistics")
+    public String statistics(Model model) {
 
-        return "inventory/warehouseStatistics";
+        return "inventory/statistics";
     }
 
 
