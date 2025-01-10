@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
-  <title>Santa's Logistics</title>
 </head>
 <body>
-<h1>Welcome to Santa Health Care!</h1>
+<div class="container mt-5" layout:fragment="content">
+    <div class="text-center">
+        <h1 class="display-4">Welcome to My Page</h1>
+        <p class="lead">This is a simple, styled index page using Thymeleaf and Bootstrap.</p>
+        <a href="/about" class="btn btn-primary btn-lg">Learn More</a>
+        <a href="/contact" class="btn btn-outline-secondary btn-lg">Contact Us</a>
+    </div>
+</div>
 </body>
 </html>
-

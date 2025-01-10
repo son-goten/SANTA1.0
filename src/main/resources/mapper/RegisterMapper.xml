@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.santa.register.mapper.RegisterMapper">
+
+    <!-- Check if User ID exists -->
+    <select id="getUserIdCount" resultType="int" parameterType="string">
+        SELECT COUNT(*)
+        FROM Administrators
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- Get Role by Employee Code -->
+    <select id="getRoleByEmployeeCode" resultType="string" parameterType="string">
+        SELECT role
+        FROM EmployeeRoles
+        WHERE employee_code = #{employeeCode}
+    </select>
+
+    <!-- Insert New User -->
+    <insert id="insertUser" parameterType="com.example.santa.register.vo.RegisterVO">
+        INSERT INTO Administrators (user_id, password, employee_code, role, name, email)
+        VALUES (#{userId}, #{password}, #{employeeCode}, #{role}, #{name}, #{email})
+    </insert>
+
+    <select id="getEmployeeCodeCount" resultType="int" parameterType="string">
+        SELECT COUNT(*)
+        FROM EmployeeRoles
+        WHERE employee_code = #{employeeCode}
+    </select>
+</mapper>
