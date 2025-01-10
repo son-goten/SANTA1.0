@@ -9,13 +9,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OutgoingVO {
-    private int outgoingId;
-    private int warehouseId;
-    private int productId;
+
+public class OutgoingDetailsDTO {
+ private int outgoingId;
     private int orderId;
-    private int branchId;
-    private int outgoingQuantity;
     private String outgoingDate;
     private String outgoingStatus;
+    private String warehouseName;
+    private String branchName;
+    private String productCategory;
+    private String productName;
+    private int outgoingQuantity;
+    private long productPrice;
+    private long totalPrice;
 }
