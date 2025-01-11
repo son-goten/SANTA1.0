@@ -15,24 +15,24 @@ public class InventoryController {
     private final InventoryService inventoryService;
 
     //창고별 재고 관리
-    @GetMapping("warehouseManagement")
+    @GetMapping("warehouseRead")
     public String warehouseManagement(Model model) {
 
-        return "inventory/warehouseManagement";
+        return "inventory/warehouseRead";
     }
 
     //품목별 재고 관리
-    @GetMapping("categoryManagement")
+    @GetMapping("categoryRead")
     public String categoryManagement(Model model) {
 
-        return "inventory/categoryManagement";
+        return "inventory/categoryRead";
     }
 
     //재고 이력 관리
-    @GetMapping("historyManagement")
+    @GetMapping("historyRead")
     public String historyManagement(Model model) {
 
-        return "inventory/historyManagement";
+        return "inventory/historyRead";
     }
 
     //창고 재고

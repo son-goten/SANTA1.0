@@ -3,4 +3,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.santa.inventory.mapper.InventoryMapper">
 
+    <resultMap id="WarehouseInventoryResultMap" type="com.example.santa.inventory.vo.InventoryVO">
+        <id property="inventoryId" column="inventory_id"/>
+        <result property="warehouseId" column="warehouse_id"/>
+        <result property="productId" column="product_id"/>
+        <result property="quantity" column="quantity"/>
+        <result property="lastUpdated" column="last_updated"/>
+    </resultMap>
+
+<!-- 재고 전체 조회(창고별) -->
+
+
+<!-- 창고 검색 -->
+
+<!-- 물품 검색 -->
+
+<!-- 카테고리 검색 -->
 </mapper>
