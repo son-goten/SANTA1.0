@@ -63,7 +63,7 @@ CREATE TABLE Administrators
     admin_id      INT AUTO_INCREMENT PRIMARY KEY,      -- 관리자 ID (고유)
     user_id       VARCHAR(50) UNIQUE  NOT NULL,        -- 로그인용 사용자 ID (중복 불가)
     password      VARCHAR(255)        NOT NULL,        -- 로그인용 비밀번호 (암호화 필요)
-    employee_code VARCHAR(50)         NOT NULL,        -- 사원코드
+    employee_code VARCHAR(50) UNIQUE  NOT NULL,        -- 사원코드
     role          ENUM('root', 'general') NOT NULL,    -- 관리자 역할 (루트 관리자, 일반 관리자)
     name          VARCHAR(100)        NOT NULL,        -- 관리자 이름
     email         VARCHAR(100) UNIQUE NOT NULL,        -- 이메일 (중복 불가)
@@ -168,14 +168,14 @@ CREATE TABLE Outgoing
 -- 14. Boards 테이블
 CREATE TABLE Board
 (
-    boardId   INT AUTO_INCREMENT PRIMARY KEY,                                      -- 게시글 또는 댓글 ID
-    boardType ENUM('NOTICE', 'GENERAL') NOT NULL,                                  -- 게시판 유형 (공지사항 또는 일반 게시판)
-    authorId  INT  NOT NULL,                                                       -- 작성자 ID (참조: Administrators 또는 다른 사용자 테이블과 연계 가능)
-    title     VARCHAR(255),                                                        -- 게시글 제목 (댓글인 경우 NULL)
+    boardId   INT AUTO_INCREMENT PRIMARY KEY,                                     -- 게시글 또는 댓글 ID
+    boardType ENUM('NOTICE', 'GENERAL') NOT NULL,                                 -- 게시판 유형 (공지사항 또는 일반 게시판)
+    authorId  INT  NOT NULL,                                                      -- 작성자 ID (참조: Administrators 또는 다른 사용자 테이블과 연계 가능)
+    title     VARCHAR(255),                                                       -- 게시글 제목 (댓글인 경우 NULL)
     content   TEXT NOT NULL,
-    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,                                  -- 작성일
-    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,      -- 수정일
-    FOREIGN KEY (author_id) REFERENCES Administrators (admin_id) ON DELETE CASCADE -- 작성자 삭제 시 연쇄 삭제
+    createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,                                 -- 작성일
+    updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,     -- 수정일
+    FOREIGN KEY (authorId) REFERENCES Administrators (admin_id) ON DELETE CASCADE -- 작성자 삭제 시 연쇄 삭제
 );
 
 -- 14.5 댓글 테이블
@@ -263,12 +263,8 @@ VALUES ('EMP001', 'root'),    -- 루트 관리자 권한
 -- 일반 관리자 권한
 
 -- 6. Administrators 테이블
-INSERT INTO Administrators (user_id, password, role)
-VALUES ('admin1', 'password1', 'root'),
-       ('admin2', 'password2', 'general'),
-       ('admin3', 'password3', 'general'),
-       ('admin4', 'password4', 'general'),
-       ('admin5', 'password5', 'root');
+-- 직접 회원 가입 해야함
+
 
 -- 7. Products 테이블
 INSERT INTO Products (name, description, category_id, price, manufacturer_id)
