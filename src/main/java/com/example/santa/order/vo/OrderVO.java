@@ -3,13 +3,18 @@ package com.example.santa.order.vo;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.Builder;
+
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class OrderVO {
 
-    private int order_id;
+    private int orderId;
+    private int warehouseId;
+    private int branchId;
+    private Date orderDate;
+    private String orderStatus;
+
 }

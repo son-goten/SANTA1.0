@@ -13,16 +13,16 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    //주문 현황
-    @GetMapping("status")
+    //주문 조회
+    @GetMapping("read")
     public String status() {
-        return "order/status";
+        return "order/read";
     }
 
-    //주문 상세
-    @GetMapping("details")
+    //주문 승인
+    @GetMapping("approval")
     public String details() {
-        return "order/details";
+        return "order/approval";
     }
 
     //주문 통계
