@@ -8,9 +8,10 @@ import java.util.List;
 
 @Mapper
 public interface EmployeeMapper {
-    // 직원 리스트 조회 및 검색
+    // 직원 리스트 조회
     List<EmployeeVO> getAllEmployees();
 
+    // 직원 검색
     List<EmployeeVO> searchEmployees(@Param("keyword") String keyword);
 
     // 직원 권한 변경 (다중)

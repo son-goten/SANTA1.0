@@ -26,16 +26,23 @@ public class EmployeeController {
 
     // 직원 권한 변경 (다중)
     @PostMapping("/updateRoles")
-    public String updateEmployeeRoles(@RequestParam List<String> employeeCodes,
+    public String updateEmployeeRoles(@RequestParam(name = "employeeCodes", required = false) List<String> employeeCodes,
                                       @RequestParam String newRole) {
+        if (employeeCodes == null || employeeCodes.isEmpty()) {
+            throw new IllegalArgumentException("권한을 변경할 직원이 선택되지 않았습니다.");
+        }
         employeeService.updateEmployeeRoles(employeeCodes, newRole);
         return "redirect:/employee";
     }
 
     // 직원 삭제 (다중)
     @PostMapping("/delete")
-    public String deleteEmployees(@RequestParam List<String> employeeCodes) {
+    public String deleteEmployees(@RequestParam(name = "employeeCodes", required = false) List<String> employeeCodes) {
+        if (employeeCodes == null || employeeCodes.isEmpty()) {
+            throw new IllegalArgumentException("삭제할 직원이 선택되지 않았습니다.");
+        }
         employeeService.deleteEmployees(employeeCodes);
         return "redirect:/employee";
     }
 }
+

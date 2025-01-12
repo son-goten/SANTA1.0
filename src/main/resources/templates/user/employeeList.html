@@ -5,6 +5,7 @@
 <body>
 <div class="page-inner" layout:fragment="content">
     <h2>직원 관리</h2>
+
     <!-- 검색 영역 -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <form th:action="@{/employee}" method="get" style="flex-grow: 1; display: flex;">
@@ -14,7 +15,7 @@
     </div>
 
     <!-- 테이블 영역 -->
-    <form th:action="@{/employee/delete}" method="post">
+    <form id="deleteForm" th:action="@{/employee/delete}" method="post" style="margin-bottom: 0;">
         <table class="table" style="width: 100%; border-collapse: collapse;">
             <thead>
             <tr>
@@ -35,25 +36,28 @@
             </tr>
             </tbody>
         </table>
-
-        <!-- 버튼 영역 -->
-        <div style="display: flex; justify-content: center; margin-top: 20px;">
-            <button type="submit" class="btn btn-danger" style="margin-right: 10px; padding: 10px 20px;">선택 삭제</button>
-            <div>
-                <form th:action="@{/employee/updateRoles}" method="post" style="display: flex; align-items: center;">
-                    <label for="newRole" style="margin-right: 10px;">새 권한:</label>
-                    <select id="newRole" name="newRole" style="margin-right: 10px; padding: 8px;">
-                        <option value="root">root</option>
-                        <option value="general">general</option>
-                    </select>
-                    <button type="submit" class="btn btn-primary" style="padding: 10px 20px;">선택 권한 변경</button>
-                </form>
-            </div>
-        </div>
     </form>
+
+    <!-- 버튼 영역 -->
+    <div style="display: flex; justify-content: flex-end; align-items: center; margin-top: 20px; gap: 20px;">
+        <!-- 선택 삭제 버튼 -->
+        <button type="submit" form="deleteForm" class="btn btn-danger" style="padding: 10px 20px;"
+                onclick="return confirm('선택된 항목을 삭제하시겠습니까?');">선택 삭제</button>
+
+        <!-- 권한 변경 폼 -->
+        <form th:action="@{/employee/updateRoles}" method="post" style="display: flex; align-items: center;">
+            <label for="newRole" style="margin-right: 10px;">새 권한:</label>
+            <select id="newRole" name="newRole" style="margin-right: 10px; padding: 8px;">
+                <option value="root">root</option>
+                <option value="general">general</option>
+            </select>
+            <button type="submit" class="btn btn-primary" style="padding: 10px 20px;">선택 권한 변경</button>
+        </form>
+    </div>
 </div>
 
 <script>
+    // 전체 선택/해제 기능
     function toggleSelectAll(checkbox) {
         const checkboxes = document.querySelectorAll('input[name="employeeCodes"]');
         checkboxes.forEach(cb => cb.checked = checkbox.checked);
