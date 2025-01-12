@@ -2,5 +2,103 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.santa.order.mapper.OrderMapper">
+    <resultMap id="OrderResultMap" type="com.example.santa.order.vo.OrderDTO">
+        <result property="orderDate" column="order_date"/>
+        <result property="orderId" column="order_id" />
+        <result property="orderStatus" column="order_status" />
+        <result property="branchName" column="branch_name" />
+        <result property="productName" column="product_name" />
+        <result property="quantity" column="quantity" />
+        <result property="price" column="price" />
+        <result property="totalPrice" column="total_price" />
+    </resultMap>
 
+    <!-- 전체 검색 -->
+    <select id="selectAllOrders" resultMap="OrderResultMap" >
+        SELECT
+            o.order_id AS order_id,
+            o.order_date AS order_date,
+            o.status AS order_status,
+            b.name AS branch_name,
+            p.name AS product_name,
+            o.quantity AS quantity,
+            p.price AS price,
+            (o.quantity * p.price) AS total_price
+        FROM Orders o
+                 LEFT JOIN Warehouses w ON o.warehouse_id = w.warehouse_id
+                 LEFT JOIN Branches b ON o.branch_id = b.branch_id
+                 LEFT JOIN Products p ON o.product_id = p.product_id
+    </select>
+
+    <!-- 주문 일자 검색 -->
+    <select id="searchByOrderDate" resultMap="OrderResultMap">
+        SELECT
+            o.order_id AS order_id,
+            o.order_date AS order_date,
+            o.status AS order_status,
+            b.name AS branch_name,
+            p.name AS product_name,
+            o.quantity AS quantity,
+            p.price AS price,
+            (o.quantity * p.price) AS total_price
+        FROM Orders o
+                 LEFT JOIN Warehouses w ON o.warehouse_id = w.warehouse_id
+                 LEFT JOIN Branches b ON o.branch_id = b.branch_id
+                 LEFT JOIN Products p ON o.product_id = p.product_id
+        WHERE o.order_date BETWEEN #{startDate} AND #{endDate}
+    </select>
+
+    <!-- 주문 물품 검색 -->
+    <select id="searchByProductName" resultMap="OrderResultMap">
+        SELECT
+            o.order_id AS order_id,
+            o.order_date AS order_date,
+            o.status AS order_status,
+            b.name AS branch_name,
+            p.name AS product_name,
+            o.quantity AS quantity,
+            p.price AS price,
+            (o.quantity * p.price) AS total_price
+        FROM Orders o
+                 LEFT JOIN Warehouses w ON o.warehouse_id = w.warehouse_id
+                 LEFT JOIN Branches b ON o.branch_id = b.branch_id
+                 LEFT JOIN Products p ON o.product_id = p.product_id
+        WHERE p.name LIKE CONCAT('%', #{productName}, '%');
+    </select>
+
+    <!-- 주문 지점 검색 -->
+    <select id="searchByBranchName" resultMap="OrderResultMap">
+        SELECT
+            o.order_id AS order_id,
+            o.order_date AS order_date,
+            o.status AS order_status,
+            b.name AS branch_name,
+            p.name AS product_name,
+            o.quantity AS quantity,
+            p.price AS price,
+            (o.quantity * p.price) AS total_price
+        FROM Orders o
+                 LEFT JOIN Warehouses w ON o.warehouse_id = w.warehouse_id
+                 LEFT JOIN Branches b ON o.branch_id = b.branch_id
+                 LEFT JOIN Products p ON o.product_id = p.product_id
+        WHERE b.name LIKE CONCAT('%', #{branchName}, '%');
+    </select>
+
+    <!-- 주문 상태 검색 -->
+    <select id="searchByOrderStatus" resultMap="OrderResultMap">
+        SELECT
+            o.order_id AS order_id,
+            o.order_date AS order_date,
+            o.status AS order_status,
+            b.name AS branch_name,
+            p.name AS product_name,
+            o.quantity AS quantity,
+            p.price AS price,
+            (o.quantity * p.price) AS total_price
+        FROM Orders o
+                 LEFT JOIN Warehouses w ON o.warehouse_id = w.warehouse_id
+                 LEFT JOIN Branches b ON o.branch_id = b.branch_id
+                 LEFT JOIN Products p ON o.product_id = p.product_id
+        WHERE o.status LIKE CONCAT('%', #{orderStatus}, '%');
+    </select>
 </mapper>
