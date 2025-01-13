@@ -1,15 +1,12 @@
 package com.example.santa.outgoing.controller;
 
 import com.example.santa.outgoing.service.OutgoingService;
-import com.example.santa.outgoing.vo.OutgoingDetailsDTO;
+import com.example.santa.outgoing.vo.OutgoingDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,13 +18,33 @@ public class OutgoingController {
 
     private final OutgoingService outgoingService;
 
-    @GetMapping("outgoingRead")
+    @GetMapping("/outgoingRead")
     public String readOutgoing(Model model) {
-        List<OutgoingDetailsDTO> list = outgoingService.findAllOutgoing();
+        List<OutgoingDTO> list = outgoingService.findAllOutgoing();
         System.out.println("list >>>>> " + list);
-        model.addAttribute("outgoings", list);
+        model.addAttribute("list", list);
 
         return "/outgoing/outgoingRead";
     }
+
+    @PostMapping("readProduct")
+    @ResponseBody
+    public List<OutgoingDTO> readProduct(@RequestBody OutgoingDTO outgoingDTO, Model model) {
+        System.out.println("=========================OKAY READPRODUCT===============");
+        List<OutgoingDTO> list = outgoingService.findOutgoingByBranchName(outgoingDTO.getBranchName());
+        System.out.println("=============list========" + list);
+        return list;
+    }
+
+    @PostMapping("readCategory")
+    @ResponseBody
+    public List<OutgoingDTO> readCategory(@RequestBody OutgoingDTO outgoingDTO, Model model) {
+        System.out.println("=========================OKAY READ CATEGORY===============");
+        List<OutgoingDTO> list = outgoingService.findOutgoingByCategory(outgoingDTO.getProductCategory());
+        System.out.println("=============list========" + list);
+        return list;
+
+    }
+
 
 }
