@@ -14,28 +14,30 @@ public class InventoryController {
 
     private final InventoryService inventoryService;
 
-    //창고별 재고 관리
+    //*************************************************
+    //******************** 창고별 재고 조회 **************
+    //*************************************************
+    //창고별 재고 조회
     @GetMapping("warehouseRead")
     public String warehouseManagement(Model model) {
 
         return "inventory/warehouseRead";
     }
 
-    //품목별 재고 관리
+    //*************************************************
+    //******************** 품목별 재고 조회 **************
+    //*************************************************
+    //품목별 재고 조회
     @GetMapping("categoryRead")
     public String categoryManagement(Model model) {
 
         return "inventory/categoryRead";
     }
 
-    //재고 이력 관리
-    @GetMapping("historyRead")
-    public String historyManagement(Model model) {
-
-        return "inventory/historyRead";
-    }
-
-    //창고 재고
+    //*************************************************
+    //******************** 재고 통계 *******************
+    //*************************************************
+    //재고 통계
     @GetMapping("statistics")
     public String statistics(Model model) {
 

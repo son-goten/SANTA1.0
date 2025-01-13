@@ -26,41 +26,29 @@
         </ul>
     </div>
     <!-- 승인 대기 중인 주문들 -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card border-success">
+    <div class="row g-4">
+        <!-- 필터 카드 -->
+        <div class="col-lg-12">
+            <div class="card border-success h-100">
                 <div class="card-header bg-danger text-white text-center">
-                    <h4 class="card-title m-0">주문 승인</h4>
+                    <h4 class="card-title m-0">창고별 재고 조회</h4>
                 </div>
                 <div class="card-body bg-white">
-                    <!-- 필터 섹션 -->
                     <div class="p-3 bg-light border rounded">
-                        <div class="row g-3">
-                            <!-- 주문일자 -->
-                            <div class="col-md-6 d-flex align-items-center">
-                                <label for="start-date" class="form-label fw-bold text-success me-2 mb-0">주문일자</label>
-                                <input type="date" id="start-date" class="form-control w-25 me-2">
-                                <input type="date" id="end-date" class="form-control w-25 me-2">
-                                <button class="btn btn-danger" onclick="searchByOrderDate()">검색</button>
+                        <div class="row g-3 align-items-center">
+                            <!-- 상품명 검색 -->
+                            <div class="col-md-9 d-flex align-items-center">
+                                <label for="product-name" class="form-label fw-bold text-success me-3 mb-0" style="white-space: nowrap;">
+                                    상품명
+                                </label>
+                                <input type="text" id="product-name" class="form-control me-3" placeholder="상품명을 입력하세요">
+                                <button class="btn btn-danger text-nowrap px-4" onclick="searchByProductName()">검색</button>
                             </div>
 
-                            <!-- 상품명 -->
-                            <div class="col-md-6 d-flex align-items-center">
-                                <label for="product-name" class="form-label fw-bold text-success me-2 mb-0">상품명</label>
-                                <input type="text" id="product-name" class="form-control w-75 me-2">
-                                <button class="btn btn-danger" onclick="searchByProductName()">검색</button>
-                            </div>
-
-                            <!-- 주문지점 -->
-                            <div class="col-md-6 d-flex align-items-center">
-                                <label for="branch" class="form-label fw-bold text-success me-2 mb-0">주문지점</label>
-                                <input type="text" id="branch" class="form-control w-75 me-2">
-                                <button class="btn btn-danger" onclick="searchByBranchName()">검색</button>
-                            </div>
-
-                            <!-- 전체 조회 버튼 -->
-                            <div class="col-md-12 d-flex justify-content-end">
-                                <button class="btn btn-primary" onclick="selectOrders()">전체 조회</button>
+                            <!-- 버튼 정렬 -->
+                            <div class="col-md-3 d-flex justify-content-end">
+                                <button class="btn btn-primary me-2" onclick="addWarehouse()">창고 추가</button>
+                                <button class="btn btn-primary px-4" onclick="readInventory()">전체 조회</button>
                             </div>
                         </div>
                     </div>
@@ -75,17 +63,11 @@
                     class="display table table-striped table-hover"
             >
                 <thead>
-                <tr>
-                    <th>주문일자</th>
-                    <th>주문ID</th>
-                    <th>지점명</th>
+                <tr id="">
+                    <th>상품ID</th>
                     <th>상품명</th>
                     <th>재고수량</th>
-                    <th>주문수량</th>
-                    <th>상품가격</th>
-                    <th>총가격</th>
-                    <th>승인상태</th>
-                    <th></th>
+                    <!-- 창고별 재고 수량 추가 할 수 있게 -->
                 </tr>
                 </thead>
                 <tbody id="tbody">
@@ -112,12 +94,12 @@
                     if (response.data && response.data.length > 0) {
                         callback(response.data); // 데이터 처리 콜백 호출
                     } else {
-                        alert("조건에 맞는 데이터가 없습니다.");
+                        console.log("조건에 맞는 데이터가 없습니다.");
                     }
                 })
                 .catch(error => {
                     console.error("요청 중 에러 발생:", error);
-                    alert("요청 처리 중 문제가 발생했습니다.");
+                    console.log("요청 처리 중 문제가 발생했습니다.");
                 });
         }
 
@@ -138,16 +120,10 @@
 
                 body += `
             <tr>
-                <td class="text-center">${item.orderDate}</td>
-                <td class="text-center">${item.orderId}</td>
-                <td class="text-center">${item.branchName}</td>
+                <td class="text-center">${item.productId}</td>
                 <td class="text-center">${item.productName}</td>
                 <td class="text-center">${item.inventoryQuantity}</td>
-                <td class="text-center">${item.quantity}</td>
-                <td class="text-center">${item.price}원</td>
-                <td class="text-center">${item.totalPrice}원</td>
-                <td class="text-center ${statusClass}">${item.orderStatus}</td>
-                <td></td>
+                <td></td> <!-- 창고 추가 가능 -->
             </tr>
         `;
             });
@@ -156,39 +132,25 @@
         }
 
 
-        //승인 대기 주문 list
-        function readPendingOrders() {
-            sendRequest("/order/readPendingOrders", "get", null, data => {
-                renderTable("tbody", data);
-
-                // 기존 DataTable 제거 후 재초기화
-                if ($.fn.DataTable.isDataTable("#basic-datatables")) {
-                    $("#basic-datatables").DataTable().destroy(); // 기존 DataTable 제거
-                }
-            });
-        }
-
-        // 주문일자 검색
-        function searchByPendingOrderDate() {
-            const startDate = document.getElementById("start-date").value;
-            const endDate = document.getElementById("end-date").value;
-
-            if (!startDate || !endDate) {
-                alert("시작일자와 종료일자를 입력해주세요.");
-                return;
-            }
-
-            sendRequest("/order/searchByPendingOrderDate", "post", { startDate, endDate }, data => {
+        //재고 list
+        function readInventory() {
+            sendRequest("/order/readInventory", "get", null, data => {
                 renderTable("tbody", data);
             });
         }
 
         // 상품명 검색
-        function searchByPendingProductName() {
+        function searchByProductName() {
             const productName = document.getElementById("product-name").value;
 
             if (!productName) {
-                alert("상품명을 입력해주세요.");
+                swal("", "상품명을 입력해주세요.", {
+                    buttons: {
+                        confirm: {
+                            className: 'btn btn-danger'
+                        }
+                    },
+                });
                 return;
             }
 
@@ -197,21 +159,13 @@
             });
         }
 
-        // 주문지점 검색
-        function searchByPendingBranchName() {
-            const branchName = document.getElementById("branch").value;
+        //자신이 관리할 창고 추가 할 수 있는 함수
+        function addWarehouse(){
 
-            if (!branch) {
-                alert("지점을 입력해주세요.");
-                return;
-            }
-
-            sendRequest("/order/searchByPendingBranchName", "post", { branchName }, data => {
-                renderTable("tbody", data);
-            });
         }
 
-        readPendingOrders();
+
+        readInventory();
     </script>
 </th:block>
 </html>
