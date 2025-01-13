@@ -13,7 +13,7 @@ public interface OrderMapper {
     //******************** 주문 조회 ********************
     //*************************************************
     //주문 조회 list
-    List<OrderDTO> selectAllOrders();
+    List<OrderDTO> readOrder();
     //주문일자 검색
     List<OrderDTO> searchByOrderDate(@Param("startDate") String startDate, @Param("endDate") String endDate);
     //상품명 검색
@@ -36,8 +36,10 @@ public interface OrderMapper {
     List<OrderDTO> searchByPendingOrderDate(@Param("startDate") String startDate, @Param("endDate") String endDate);
 
     // 승인 대기 주문, 주문 상품 검색
+    List<OrderDTO> searchByPendingProductName(@Param("productName") String productName);
 
     // 승인 대기 주문, 주문 지점 검색
+    List<OrderDTO> searchByPendingBranchName(@Param("branchName") String branchName);
 
     //*************************************************
     //******************** 주문 통계 ********************

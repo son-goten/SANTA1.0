@@ -19,8 +19,8 @@ public class OrderService {
     //******************** 주문 조회 ********************
     //*************************************************
     //주문 조회 list
-    public List<OrderDTO> selectAllOrders(){
-        return orderMapper.selectAllOrders();
+    public List<OrderDTO> readOrder(){
+        return orderMapper.readOrder();
     }
 
     //주문 일자 검색
@@ -62,8 +62,14 @@ public class OrderService {
     }
 
     // 승인 대기 주문, 주문 상품 검색
+    public List<OrderDTO> searchByPendingProductName(String productName) {
+        return orderMapper.searchByPendingProductName(productName);
+    }
 
     // 승인 대기 주문, 주문 지점 검색
+    public List<OrderDTO> searchByPendingBranchName(String branchName) {
+        return orderMapper.searchByPendingBranchName(branchName);
+    }
 
     //*************************************************
     //******************** 주문 통계 ********************

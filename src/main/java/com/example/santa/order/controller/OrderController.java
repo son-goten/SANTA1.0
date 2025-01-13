@@ -27,9 +27,9 @@ public class OrderController {
     //주문 조회 list
     @GetMapping("readOrder")
     @ResponseBody
-    public List<OrderDTO> getOrdersList(){
+    public List<OrderDTO> readOrder(){
 
-        List<OrderDTO> list = orderService.selectAllOrders();
+        List<OrderDTO> list = orderService.readOrder();
         return list;
     }
 
@@ -136,13 +136,33 @@ public class OrderController {
     public List<OrderDTO> searchByPendingOrderDate(@RequestBody Map<String, String> dateRange) {
         String startDate = dateRange.get("startDate");
         String endDate = dateRange.get("endDate");
+        System.out.println("----- 승인 대기 주문, 주문 일자 검색 -----");
+        System.out.println("Date : " + startDate + " ~ " + endDate);
         List<OrderDTO> list = orderService.searchByPendingOrderDate(startDate, endDate);
         return list;
     }
 
     // 승인 대기 주문, 주문 상품 검색
+    @PostMapping("searchByPendingProductName")
+    @ResponseBody
+    public List<OrderDTO> searchByPendingProductName(@RequestBody OrderDTO orderDTO) {
+        String productName = orderDTO.getProductName().trim();
+        System.out.println("----- 승인 대기 주문, 주문 상품 검색 -----");
+        System.out.println("productName : " + productName);
+        List<OrderDTO> list = orderService.searchByPendingProductName(productName);
+        return list;
+    }
 
     // 승인 대기 주문, 주문 지점 검색
+    @PostMapping("searchByPendingBranchName")
+    @ResponseBody
+    public List<OrderDTO> searchByPendingBranchName(@RequestBody OrderDTO orderDTO) {
+        String branchName = orderDTO.getBranchName().trim();
+        System.out.println("----- 승인 대기 주문, 주문 지점 검색 -----");
+        System.out.println("branchName : " + branchName);
+        List<OrderDTO> list = orderService.searchByPendingBranchName(branchName);
+        return list;
+    }
 
     //*************************************************
     //******************** 주문 통계 ********************
