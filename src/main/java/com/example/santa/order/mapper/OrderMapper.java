@@ -30,9 +30,10 @@ public interface OrderMapper {
     List<OrderDTO> readPendingOrders();
 
     //주문 승인/거절
-    boolean updateOrderStatus(int orderId, String status);
+    int updateOrderStatus(int orderId, String orderStatus);
 
     // 승인 대기 주문, 주문 일자 검색
+    List<OrderDTO> searchByPendingOrderDate(@Param("startDate") String startDate, @Param("endDate") String endDate);
 
     // 승인 대기 주문, 주문 상품 검색
 

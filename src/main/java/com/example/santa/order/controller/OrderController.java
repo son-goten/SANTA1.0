@@ -106,18 +106,23 @@ public class OrderController {
 
     //주문 승인/거절
     @PostMapping("updateOrderStatus")
+    @ResponseBody
     public boolean updateOrderStatus(@RequestBody OrderDTO orderDTO ) {
 
         int orderId = orderDTO.getOrderId();
-        String status = orderDTO.getOrderStatus();
+        String orderStatus = orderDTO.getOrderStatus();
 
         System.out.println("----- 주문 승인/거절 -----");
-        System.out.println("orderId : " + orderId + " status : " + status);
+        System.out.println("orderId : " + orderId + " status : " + orderStatus);
 
         // 상태 변경 수행
         try {
-            boolean isUpdated = orderService.updateOrderStatus(orderId, status);
-            return isUpdated; // 상태 변경 성공 여부 반환
+            int isUpdated = orderService.updateOrderStatus(orderId, orderStatus);
+            if(isUpdated > 0 ) {
+                return true; // 상태 변경 성공 여부 반환
+            }else{
+                return false;
+            }
         } catch (Exception e) {
             e.printStackTrace(); // 예외 출력
             return false; // 실패 시 false 반환
@@ -126,6 +131,14 @@ public class OrderController {
     }
 
     // 승인 대기 주문, 주문 일자 검색
+    @PostMapping("searchByPendingOrderDate")
+    @ResponseBody
+    public List<OrderDTO> searchByPendingOrderDate(@RequestBody Map<String, String> dateRange) {
+        String startDate = dateRange.get("startDate");
+        String endDate = dateRange.get("endDate");
+        List<OrderDTO> list = orderService.searchByPendingOrderDate(startDate, endDate);
+        return list;
+    }
 
     // 승인 대기 주문, 주문 상품 검색
 

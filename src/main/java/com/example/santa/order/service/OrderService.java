@@ -52,11 +52,14 @@ public class OrderService {
     }
 
     //주문 승인/거절
-    public boolean updateOrderStatus(int orderId, String status) {
-        return orderMapper.updateOrderStatus(orderId,status);
+    public int updateOrderStatus(int orderId, String orderStatus) {
+        return orderMapper.updateOrderStatus(orderId,orderStatus);
     }
 
     // 승인 대기 주문, 주문 일자 검색
+    public List<OrderDTO> searchByPendingOrderDate(String startDate, String endDate) {
+        return orderMapper.searchByPendingOrderDate(startDate, endDate);
+    }
 
     // 승인 대기 주문, 주문 상품 검색
 

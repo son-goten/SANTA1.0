@@ -110,7 +110,10 @@
                 data: data
             })
                 .then(response => {
-                    if (response.data && response.data.length > 0) {
+                    console.log("Response received:", response.data);
+
+                    // response.data가 비어 있거나 유효하지 않은 경우 처리
+                    if (response.data) {
                         callback(response.data); // 데이터 처리 콜백 호출
                     } else {
                         alert("조건에 맞는 데이터가 없습니다.");
@@ -134,7 +137,7 @@
             data.forEach(item => {
                 // 상태에 따라 Bootstrap 텍스트 색상 클래스 설정
                 const statusClass = item.orderStatus === "대기" ? "text-warning" :
-                    item.orderStatus === "완료" ? "text-success" :
+                    item.orderStatus === "승인" ? "text-success" :
                         "text-danger";
 
                 body += `
@@ -176,9 +179,9 @@
         }
 
         //주문 승인/거절 요청
-        function updateOrderStatus(orderId, status) {
-            sendRequest("/order/updateOrderStatus", "post", { orderId, status }, data => {
-                alert(`주문이 ${status === '승인' ? '승인' : '거절'}되었습니다.`);
+        function updateOrderStatus(orderId, orderStatus) {
+            sendRequest("/order/updateOrderStatus", "post", { orderId, orderStatus }, data => {
+                alert(`주문이 ${orderStatus === '승인' ? '승인' : '거절'}되었습니다.`);
                 readPendingOrders(); // 테이블 갱신(상태 변경 시켜서)
             });
         }

@@ -67,8 +67,8 @@
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                         <a class="dropdown-item" onclick="searchByOrderStatus('대기')" href="#">주문 대기</a>
-                                        <a class="dropdown-item" onclick="searchByOrderStatus('완료')" href="#">주문 완료</a>
-                                        <a class="dropdown-item" onclick="searchByOrderStatus('취소')"  href="#">주문 취소</a>
+                                        <a class="dropdown-item" onclick="searchByOrderStatus('승인')" href="#">주문 승인</a>
+                                        <a class="dropdown-item" onclick="searchByOrderStatus('거절')"  href="#">주문 거절</a>
                                     </div>
                                 </div>
                             </div>
@@ -146,7 +146,7 @@
             data.forEach(item => {
                 // 상태에 따라 Bootstrap 텍스트 색상 클래스 설정
                 const statusClass = item.orderStatus === "대기" ? "text-warning" :
-                    item.orderStatus === "완료" ? "text-success" :
+                    item.orderStatus === "승인" ? "text-success" :
                         "text-danger";
 
                 body += `
