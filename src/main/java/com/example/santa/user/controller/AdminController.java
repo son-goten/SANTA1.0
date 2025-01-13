@@ -31,14 +31,13 @@ public class AdminController {
         return adminService.getAllAdmins();
     }
 
-    // 권한 수정 API
+    // 관리자 수정 API
     @ResponseBody
-    @PutMapping("/role")
-    public ResponseEntity<String> updateRole(@RequestParam("employeeCode") String employeeCode,
-                                             @RequestParam("role") String role) {
-        boolean updated = adminService.updateRole(employeeCode, role);
-        return updated ? ResponseEntity.ok("Role updated successfully")
-                : ResponseEntity.badRequest().body("Failed to update role");
+    @PutMapping("/update")
+    public ResponseEntity<String> updateAdmin(@RequestBody AdminVO adminVO) {
+        boolean updated = adminService.updateAdmin(adminVO);
+        return updated ? ResponseEntity.ok("Admin updated successfully")
+                : ResponseEntity.badRequest().body("Failed to update admin");
     }
 
     // 관리자 삭제 API

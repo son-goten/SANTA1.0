@@ -20,9 +20,9 @@ public class AdminService {
     }
 
     @Transactional
-    public boolean updateRole(String employeeCode, String role) {
-        int updatedRoles = adminMapper.updateEmployeeRole(employeeCode, role);
-        int updatedAdmins = adminMapper.updateAdminRole(employeeCode, role);
+    public boolean updateAdmin(AdminVO adminVO) {
+        int updatedRoles = adminMapper.updateEmployeeRole(adminVO.getEmployeeCode(), adminVO.getRole());
+        int updatedAdmins = adminMapper.updateAdminDetails(adminVO);
         return updatedRoles > 0 && updatedAdmins > 0;
     }
 
@@ -31,3 +31,4 @@ public class AdminService {
         return adminMapper.deleteAdmin(adminId) > 0;
     }
 }
+

@@ -8,24 +8,25 @@
     <select id="getAllAdmins" resultType="com.example.santa.user.vo.AdminVO">
         SELECT a.admin_id AS adminId,
                a.employee_code AS employeeCode,
-               e.role AS role,
                a.name AS name,
-               a.email AS email
+               a.email AS email,
+               e.role AS role
         FROM Administrators a
                  INNER JOIN EmployeeRoles e ON a.employee_code = e.employee_code
     </select>
 
-    <!-- 권한 수정 (EmployeeRoles) -->
+    <!-- 권한 수정 (EmployeeRoles 테이블) -->
     <update id="updateEmployeeRole">
         UPDATE EmployeeRoles
         SET role = #{role}
         WHERE employee_code = #{employeeCode}
     </update>
 
-    <!-- 권한 수정 (Administrators) -->
-    <update id="updateAdminRole">
+    <!-- 관리자 세부 정보 수정 (Administrators 테이블) -->
+    <update id="updateAdminDetails">
         UPDATE Administrators
-        SET role = #{role}
+        SET name = #{name},
+            email = #{email}
         WHERE employee_code = #{employeeCode}
     </update>
 

@@ -10,15 +10,15 @@
 <body>
 <div layout:fragment="content">
     <div class="container mt-5">
-        <h1 class="text-center mb-4">Admin Management</h1>
+        <h1 class="text-center mb-4">직원 관리</h1>
 
         <!-- 검색창과 검색 버튼 -->
         <div class="row mb-3">
             <div class="col-md-8">
-                <input type="text" class="form-control" id="searchInput" placeholder="Search by Employee Code or Name">
+                <input type="text" class="form-control" id="searchInput" placeholder="직원 코드나 이름을 입력하세요">
             </div>
             <div class="col-md-2">
-                <button class="btn btn-primary w-100" onclick="filterTable()">Search</button>
+                <button class="btn btn-primary w-100" onclick="filterTable()">검색</button>
             </div>
         </div>
 
@@ -39,8 +39,81 @@
         </table>
     </div>
 
+    <!-- 수정 모달 -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Admin</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm">
+                        <div class="mb-3">
+                            <label for="employeeCode" class="form-label">Employee Code</label>
+                            <input type="text" class="form-control" id="employeeCode" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="role" class="form-label">Role</label>
+                            <select class="form-select" id="role">
+                                <option value="root">Root</option>
+                                <option value="general">General</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="saveChanges()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
+        let currentAdmin = {};
+
+        function showEditModal(employeeCode, name, email, role) {
+            currentAdmin = { employeeCode, name, email, role };
+            document.getElementById('employeeCode').value = employeeCode;
+            document.getElementById('name').value = name;
+            document.getElementById('email').value = email;
+            document.getElementById('role').value = role;
+            new bootstrap.Modal(document.getElementById('editModal')).show();
+        }
+
+        async function saveChanges() {
+            const updatedAdmin = {
+                employeeCode: document.getElementById('employeeCode').value,
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                role: document.getElementById('role').value,
+            };
+
+            try {
+                const response = await axios.put('/admin/update', updatedAdmin);
+                if (response.status === 200) {
+                    alert('Admin updated successfully');
+                    new bootstrap.Modal(document.getElementById('editModal')).hide();
+                    loadAdmins();
+                } else {
+                    alert('Failed to update admin');
+                }
+            } catch (error) {
+                console.error('Failed to update admin:', error);
+                alert('Failed to update admin');
+            }
+        }
+
         async function loadAdmins() {
             try {
                 const response = await axios.get('/admin/list');
@@ -62,8 +135,8 @@
                         <td>${admin.email}</td>
                         <td>${admin.role}</td>
                         <td>
-                            <button class="btn btn-sm btn-primary" onclick="showEditModal('${admin.employeeCode}', '${admin.role}')">Edit</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteAdmin(${admin.adminId})">Delete</button>
+                            <button class="btn btn-sm btn-primary" onclick="showEditModal('${admin.employeeCode}', '${admin.name}', '${admin.email}', '${admin.role}')">수정</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteAdmin(${admin.adminId})">삭제</button>
                         </td>
                     </tr>
                 `).join('');

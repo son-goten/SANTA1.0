@@ -12,7 +12,7 @@ public interface AdminMapper {
 
     int updateEmployeeRole(@Param("employeeCode") String employeeCode, @Param("role") String role);
 
-    int updateAdminRole(@Param("employeeCode") String employeeCode, @Param("role") String role);
+    int updateAdminDetails(AdminVO adminVO);
 
     int deleteAdmin(@Param("adminId") int adminId);
 }
