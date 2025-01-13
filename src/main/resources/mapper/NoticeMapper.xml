@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.santa.notice.mapper.NoticeMapper">
+
+    <resultMap id="selectNotice" type="com.example.santa.notice.vo.NoticeDTO">
+        <result property="noticeId" column="notice_id"/>
+        <result property="categories" column="name"/>
+        <result property="title" column="title"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <resultMap id="selectNoticeById" type="com.example.santa.notice.vo.NoticeDTO">
+        <result property="noticeId" column="notice_id"/>
+        <result property="categories" column="name"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <insert id="insertNotice">
+        INSERT INTO Notice (author_id, title, content, category_id)
+        VALUES (1, #{title}, #{content}, #{categoryId});
+    </insert>
+
+    <delete id="deleteNotice">
+        DELETE FROM Notice
+        WHERE notice_id = #{noticeId}
+    </delete>
+
+    <select id="selectAllNotice" resultType="com.example.santa.notice.vo.NoticeDTO"
+            resultMap="selectNotice">
+        SELECT n.notice_id,
+               nc.name,
+               n.title,
+               DATE_FORMAT(n.updated_at, '%Y-%m-%d') AS updated_at
+        FROM Notice n
+        JOIN notice_categories nc ON n.category_id = nc.category_id
+    </select>
+
+    <select id="selectByNoticeId" resultType="com.example.santa.notice.vo.NoticeDTO"
+            resultMap="selectNoticeById">
+        SELECT n.notice_id,
+               nc.name,
+               n.title,
+               n.content,
+               DATE_FORMAT(n.updated_at, '%Y-%m-%d') AS updated_at
+        FROM Notice n
+        JOIN notice_categories nc ON n.category_id = nc.category_id
+        WHERE n.notice_id = #{noticeId}
+    </select>
+</mapper>
