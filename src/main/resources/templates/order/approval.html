@@ -116,12 +116,12 @@
                     if (response.data) {
                         callback(response.data); // 데이터 처리 콜백 호출
                     } else {
-                        alert("조건에 맞는 데이터가 없습니다.");
+                        console.log("조건에 맞는 데이터가 없습니다.");
                     }
                 })
                 .catch(error => {
                     console.error("요청 중 에러 발생:", error);
-                    alert("요청 처리 중 문제가 발생했습니다.");
+                    console.log("요청 처리 중 문제가 발생했습니다.");
                 });
         }
 
@@ -171,17 +171,20 @@
             sendRequest("/order/readPendingOrders", "get", null, data => {
                 renderTable("tbody", data);
 
-                // 기존 DataTable 제거 후 재초기화
-                if ($.fn.DataTable.isDataTable("#basic-datatables")) {
-                    $("#basic-datatables").DataTable().destroy(); // 기존 DataTable 제거
-                }
             });
         }
 
         //주문 승인/거절 요청
         function updateOrderStatus(orderId, orderStatus) {
             sendRequest("/order/updateOrderStatus", "post", { orderId, orderStatus }, data => {
-                alert(`주문이 ${orderStatus === '승인' ? '승인' : '거절'}되었습니다.`);
+                // alert(`주문이 ${orderStatus === '승인' ? '승인' : '거절'}되었습니다.`);
+                swal("승인 완료", "주문이 승인 완료되었습니다.", {
+                    buttons: {
+                        confirm: {
+                            className : 'btn btn-success btn-sm text-nowrap px-3'
+                        }
+                    },
+                });
                 readPendingOrders(); // 테이블 갱신(상태 변경 시켜서)
             });
         }
@@ -192,7 +195,14 @@
             const endDate = document.getElementById("end-date").value;
 
             if (!startDate || !endDate) {
-                alert("시작일자와 종료일자를 입력해주세요.");
+                // alert("시작일자와 종료일자를 입력해주세요.");
+                swal("","시작일자와 종료일자를 입력해주세요.", {
+                    buttons: {
+                        confirm: {
+                            className : 'btn btn-danger'
+                        }
+                    },
+                });
                 return;
             }
 
@@ -206,7 +216,14 @@
             const productName = document.getElementById("product-name").value;
 
             if (!productName) {
-                alert("상품명을 입력해주세요.");
+                // alert("상품명을 입력해주세요.");
+                swal("","상품명을 입력해주세요.", {
+                    buttons: {
+                        confirm: {
+                            className : 'btn btn-danger'
+                        }
+                    },
+                });
                 return;
             }
 
@@ -220,7 +237,14 @@
             const branchName = document.getElementById("branch").value;
 
             if (!branch) {
-                alert("지점을 입력해주세요.");
+                // alert("지점을 입력해주세요.");
+                swal("","지점을 입력해주세요.", {
+                    buttons: {
+                        confirm: {
+                            className : 'btn btn-danger'
+                        }
+                    },
+                });
                 return;
             }
 

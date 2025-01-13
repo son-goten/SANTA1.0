@@ -94,6 +94,7 @@
                     <th>주문일자</th>
                     <th>주문ID</th>
                     <th>지점명</th>
+                    <th>창고명</th>
                     <th>상품명</th>
                     <th>주문수량</th>
                     <th>상품가격</th>
@@ -125,12 +126,12 @@
                     if (response.data && response.data.length > 0) {
                         callback(response.data); // 데이터 처리 콜백 호출
                     } else {
-                        alert("조건에 맞는 데이터가 없습니다.");
+                        console.log("조건에 맞는 데이터가 없습니다.");
                     }
                 })
                 .catch(error => {
                     console.error("요청 중 에러 발생:", error);
-                    alert("요청 처리 중 문제가 발생했습니다.");
+                    console.log("요청 처리 중 문제가 발생했습니다.");
                 });
         }
 
@@ -154,6 +155,7 @@
                 <td class="text-center">${item.orderDate}</td>
                 <td class="text-center">${item.orderId}</td>
                 <td class="text-center">${item.branchName}</td>
+                <td class="text-center">${item.warehouseName}</td>
                 <td class="text-center">${item.productName}</td>
                 <td class="text-center">${item.quantity}</td>
                 <td class="text-center">${item.price}</td>
@@ -173,9 +175,9 @@
                 renderTable("tbody", data);
 
                 // 기존 DataTable 제거 후 재초기화
-                if ($.fn.DataTable.isDataTable("#basic-datatables")) {
-                    $("#basic-datatables").DataTable().destroy(); // 기존 DataTable 제거
-                }
+                // if ($.fn.DataTable.isDataTable("#basic-datatables")) {
+                //     $("#basic-datatables").DataTable().destroy(); // 기존 DataTable 제거
+                // }
             });
         }
 
@@ -185,7 +187,14 @@
             const endDate = document.getElementById("end-date").value;
 
             if (!startDate || !endDate) {
-                alert("시작일자와 종료일자를 입력해주세요.");
+                // alert("시작일자와 종료일자를 입력해주세요.");
+                swal("", "시작일자와 종료일자를 입력해주세요.", {
+                    buttons: {
+                        confirm: {
+                            className : 'btn btn-danger'
+                        }
+                    },
+                });
                 return;
             }
 
@@ -199,7 +208,15 @@
             const productName = document.getElementById("product-name").value;
 
             if (!productName) {
-                alert("상품명을 입력해주세요.");
+                // alert("상품명을 입력해주세요.");
+                swal("", "상품명을 입력해주세요.", {
+                    buttons: {
+                        confirm: {
+                            className : 'btn btn-danger'
+                        }
+                    },
+                });
+
                 return;
             }
 
@@ -213,7 +230,14 @@
             const branchName = document.getElementById("branch").value;
 
             if (!branch) {
-                alert("지점을 입력해주세요.");
+                // alert("지점을 입력해주세요.");
+                swal("", "지점을 입력해주세요.", {
+                    buttons: {
+                        confirm: {
+                            className : 'btn btn-danger'
+                        }
+                    },
+                });
                 return;
             }
 
