@@ -7,12 +7,16 @@
         <result property="orderId" column="order_id" />
         <result property="orderStatus" column="order_status" />
         <result property="branchName" column="branch_name" />
+        <result property="warehouseName" column="warehouse_name" />
         <result property="productName" column="product_name" />
+        <result property="inventoryQuantity" column="inventory_quantity" />
         <result property="quantity" column="quantity" />
         <result property="price" column="price" />
         <result property="totalPrice" column="total_price" />
     </resultMap>
-
+    <!--*************************************************-->
+    <!--******************** 주문 조회 ********************-->
+    <!--*************************************************-->
     <!-- 전체 검색 -->
     <select id="selectAllOrders" resultMap="OrderResultMap" >
         SELECT
@@ -101,4 +105,48 @@
                  LEFT JOIN Products p ON o.product_id = p.product_id
         WHERE o.status LIKE CONCAT('%', #{orderStatus}, '%');
     </select>
+
+    <!--*************************************************-->
+    <!--******************** 주문 승인 ********************-->
+    <!--*************************************************-->
+    <!-- 승인 대기 주문 list  -->
+    <select id="readPendingOrders" resultMap="OrderResultMap">
+        SELECT
+            o.order_id,
+            o.order_date,
+            o.status AS order_status,
+            COALESCE(b.name, '미등록 지점') AS branch_name, -- 지점 이름이 NULL이면 '미등록 지점'으로 표시
+            COALESCE(w.name, '미등록 창고') AS warehouse_name, -- 창고 이름이 NULL이면 '미등록 창고'로 표시
+            p.name AS product_name,
+            COALESCE(wi.quantity, 0) AS inventory_quantity, -- 재고 수량이 NULL이면 0으로 표시
+            o.quantity AS quantity,
+            p.price AS price,
+            (o.quantity * p.price) AS total_price
+        FROM Orders o
+                 LEFT JOIN Warehouses w ON o.warehouse_id = w.warehouse_id
+                 LEFT JOIN Warehouse_Inventory wi ON w.warehouse_id = wi.warehouse_id AND o.product_id = wi.product_id
+                 LEFT JOIN Branches b ON o.branch_id = b.branch_id
+                 LEFT JOIN Products p ON o.product_id = p.product_id
+        WHERE o.status = '대기';
+    </select>
+
+    <!-- 주문 승인/거절 -->
+    <update id="updateOrderStatus" parameterType="com.example.santa.order.vo.OrderDTO">
+        UPDATE Orders
+        SET status = #{status} -- 변경할 상태 ('승인', '거절')
+        WHERE order_id = #{orderId};
+    </update>
+
+
+    <!-- 승인 대기 주문, 주문 일자 검색 -->
+
+    <!-- 승인 대기 주문, 주문 상품 검색 -->
+
+    <!-- 승인 대기 주문, 주문 지점 검색 -->
+
+
+    <!--*************************************************-->
+    <!--******************** 주문 통계 ********************-->
+    <!--*************************************************-->
+
 </mapper>

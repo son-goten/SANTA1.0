@@ -15,7 +15,9 @@ public class OrderDTO {
     private int orderId;
     private String orderStatus;
     private String branchName;
+    private String warehouseName;
     private String productName;
+    private int inventoryQuantity;
     private int quantity;
     private double price;
     private double totalPrice;

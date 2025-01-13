@@ -16,13 +16,15 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    //주문 조회
+    //*************************************************
+    //******************** 주문 조회 ********************
+    //*************************************************
     @GetMapping("read")
     public String status() {
         return "order/read";
     }
 
-    //주문 조회 테이블
+    //주문 조회 list
     @GetMapping("readOrder")
     @ResponseBody
     public List<OrderDTO> getOrdersList(){
@@ -84,13 +86,54 @@ public class OrderController {
     }
 
 
-    //주문 승인
+    //*************************************************
+    //******************** 주문 승인 ********************
+    //*************************************************
     @GetMapping("approval")
     public String details() {
         return "order/approval";
     }
 
-    //주문 통계
+    //승인 대기 주문 list
+    @GetMapping("readPendingOrders")
+    @ResponseBody
+    public List<OrderDTO> readPendingOrders(){
+        List<OrderDTO> list = orderService.readPendingOrders();
+        System.out.println("승인 대기 주문 list : " + list);
+
+        return list;
+    }
+
+    //주문 승인/거절
+    @PostMapping("updateOrderStatus")
+    public boolean updateOrderStatus(@RequestBody OrderDTO orderDTO ) {
+
+        int orderId = orderDTO.getOrderId();
+        String status = orderDTO.getOrderStatus();
+
+        System.out.println("----- 주문 승인/거절 -----");
+        System.out.println("orderId : " + orderId + " status : " + status);
+
+        // 상태 변경 수행
+        try {
+            boolean isUpdated = orderService.updateOrderStatus(orderId, status);
+            return isUpdated; // 상태 변경 성공 여부 반환
+        } catch (Exception e) {
+            e.printStackTrace(); // 예외 출력
+            return false; // 실패 시 false 반환
+        }
+
+    }
+
+    // 승인 대기 주문, 주문 일자 검색
+
+    // 승인 대기 주문, 주문 상품 검색
+
+    // 승인 대기 주문, 주문 지점 검색
+
+    //*************************************************
+    //******************** 주문 통계 ********************
+    //*************************************************
     @GetMapping("statistics")
     public String statistics() {
         return "order/statistics";

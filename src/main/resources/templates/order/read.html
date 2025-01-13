@@ -168,7 +168,7 @@
 
 
         // 주문 조회 (전체 조회)
-        function selectOrders() {
+        function readOrder() {
             sendRequest("/order/readOrder", "get", null, data => {
                 renderTable("tbody", data);
 
@@ -229,7 +229,7 @@
             });
         }
 
-        selectOrders();
+        readOrder();
     </script>
 </th:block>
 </html>
