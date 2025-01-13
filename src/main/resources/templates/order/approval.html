@@ -178,13 +178,24 @@
         function updateOrderStatus(orderId, orderStatus) {
             sendRequest("/order/updateOrderStatus", "post", { orderId, orderStatus }, data => {
                 // alert(`주문이 ${orderStatus === '승인' ? '승인' : '거절'}되었습니다.`);
-                swal("승인 완료", "주문이 승인 완료되었습니다.", {
-                    buttons: {
-                        confirm: {
-                            className : 'btn btn-success btn-sm text-nowrap px-3'
-                        }
-                    },
-                });
+                if(orderStatus === '승인') {
+
+                    swal("승인 완료", "주문이 승인 완료되었습니다.", {
+                        buttons: {
+                            confirm: {
+                                className: 'btn btn-success btn-sm text-nowrap px-3'
+                            }
+                        },
+                    });
+                }else{
+                    swal("거절 완료", "주문이 거절 완료되었습니다.", {
+                        buttons: {
+                            confirm: {
+                                className: 'btn btn-danger btn-sm text-nowrap px-3'
+                            }
+                        },
+                    });
+                }
                 readPendingOrders(); // 테이블 갱신(상태 변경 시켜서)
             });
         }
