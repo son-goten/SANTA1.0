@@ -16,26 +16,33 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
-    // 직원 리스트 조회
+    // 직원 리스트 및 검색
     @GetMapping
-    public String listEmployees(Model model) {
-        List<EmployeeVO> employees = employeeService.getAllEmployees();
+    public String listEmployees(@RequestParam(required = false) String keyword, Model model) {
+        List<EmployeeVO> employees = employeeService.searchEmployees(keyword);
         model.addAttribute("employees", employees);
         return "user/employeeList";
     }
 
-    // 직원 권한 변경
-    @PostMapping("/updateRole")
-    public String updateEmployeeRole(@RequestParam String employeeCode,
-                                     @RequestParam String newRole) {
-        employeeService.updateEmployeeRole(employeeCode, newRole);
+    // 직원 권한 변경 (다중)
+    @PostMapping("/updateRoles")
+    public String updateEmployeeRoles(@RequestParam(name = "employeeCodes", required = false) List<String> employeeCodes,
+                                      @RequestParam String newRole) {
+        if (employeeCodes == null || employeeCodes.isEmpty()) {
+            throw new IllegalArgumentException("권한을 변경할 직원이 선택되지 않았습니다.");
+        }
+        employeeService.updateEmployeeRoles(employeeCodes, newRole);
         return "redirect:/employee";
     }
 
-    // 직원 계정 삭제
+    // 직원 삭제 (다중)
     @PostMapping("/delete")
-    public String deleteEmployee(@RequestParam String employeeCode) {
-        employeeService.deleteEmployee(employeeCode);
+    public String deleteEmployees(@RequestParam(name = "employeeCodes", required = false) List<String> employeeCodes) {
+        if (employeeCodes == null || employeeCodes.isEmpty()) {
+            throw new IllegalArgumentException("삭제할 직원이 선택되지 않았습니다.");
+        }
+        employeeService.deleteEmployees(employeeCodes);
         return "redirect:/employee";
     }
 }
+

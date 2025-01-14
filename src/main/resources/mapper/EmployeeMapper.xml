@@ -7,23 +7,40 @@
   <!-- 직원 리스트 조회 -->
   <select id="getAllEmployees" resultType="com.example.santa.user.vo.EmployeeVO">
     SELECT employee_code AS employeeCode,
-    name,
-    role,
-    email
+           name,
+           role,
+           email
     FROM Administrators
   </select>
 
-  <!-- 직원 권한 변경 -->
-  <update id="updateEmployeeRole">
+  <!-- 직원 검색 -->
+  <select id="searchEmployees" resultType="com.example.santa.user.vo.EmployeeVO">
+    SELECT employee_code AS employeeCode,
+           name,
+           role,
+           email
+    FROM Administrators
+    WHERE employee_code LIKE CONCAT('%', #{keyword}, '%')
+       OR name LIKE CONCAT('%', #{keyword}, '%')
+  </select>
+
+  <!-- 직원 권한 변경 (다중) -->
+  <update id="updateEmployeeRoles">
     UPDATE Administrators
     SET role = #{newRole}
-    WHERE employee_code = #{employeeCode}
+    WHERE employee_code IN
+    <foreach collection="employeeCodes" item="code" open="(" separator="," close=")">
+      #{code}
+    </foreach>
   </update>
 
-  <!-- 직원 계정 삭제 -->
-  <delete id="deleteEmployee">
+  <!-- 직원 삭제 (다중) -->
+  <delete id="deleteEmployees">
     DELETE FROM Administrators
-    WHERE employee_code = #{employeeCode}
+    WHERE employee_code IN
+    <foreach collection="employeeCodes" item="code" open="(" separator="," close=")">
+      #{code}
+    </foreach>
   </delete>
 
 </mapper>
