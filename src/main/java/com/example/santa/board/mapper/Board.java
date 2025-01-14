@@ -1,4 +1,4 @@
-package com.example.santa.Board.dao;
+package com.example.santa.board.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
