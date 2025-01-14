@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+  <meta charset="UTF-8"/>
+  <title>게시글 작성</title>
+  <!-- Bootstrap -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="page-inner" layout:fragment="content">
+
+  <!-- 헤더 영역 -->
+  <header class="bg-success text-white text-center py-4">
+    <h1 class="mb-0"><i class="fas fa-tree"></i> SANTA 게시판 <i class="fas fa-tree"></i></h1>
+    <p class="mb-0">A day without laughter is a day wasted!</p>
+  </header>
+
+  <!-- 작성 폼 영역 -->
+  <main class="container my-5">
+
+    <h2 class="h4 mb-4"><i class="fas fa-pencil-alt"></i> 게시글 작성</h2>
+
+    <form action="/board/create2" method="post">
+
+      <!-- 게시판 종류 -->
+      <div class="mb-3">
+        <label for="boardType" class="form-label">게시판 종류</label>
+        <select id="boardType" name="boardType" class="form-select" required>
+          <option value="GENERAL">자유게시판</option>
+        </select>
+      </div>
+
+      <!-- 제목 입력 -->
+      <div class="mb-3">
+        <label for="title" class="form-label">제목</label>
+        <input type="text" id="title" name="title" class="form-control" placeholder="제목을 입력하세요" required value="test"/>
+      </div>
+
+      <!-- 작성자 입력 -->
+      <div class="mb-3">
+        <label for="authorId" class="form-label">작성자</label>
+        <input type="text" id="authorId" name="authorId" class="form-control" style="background-color: blueviolet"
+               value="2" readonly required>
+      </div>
+
+      <!-- 내용 입력 -->
+      <div class="mb-3">
+        <label for="content" class="form-label">내용</label>
+        <textarea id="content" name="content" class="form-control" rows="10" placeholder="내용을 입력하세요" required>test</textarea>
+      </div>
+
+      <!-- 작성 버튼 -->
+      <div class="text-center">
+        <button type="submit" class="btn btn-success">
+          <i class="fas fa-check"></i> 작성 완료
+        </button>
+      </div>
+    </form>
+
+    <!-- 목록으로 돌아가기 버튼 -->
+    <div class="text-center mt-4">
+      <a href="/board/board" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> 목록으로 돌아가기
+      </a>
+    </div>
+
+  </main>
+
+  <!-- 푸터 영역 -->
+  <footer class="bg-dark text-white text-center py-3">
+    <p class="mb-0">
+      &copy; 2025 SANTA 게시판 | 모두의 행복을 빕니다!
+    </p>
+  </footer>
+
+</div>
+</body>
+</html>

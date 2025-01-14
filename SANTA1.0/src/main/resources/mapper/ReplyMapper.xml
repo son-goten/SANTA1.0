@@ -1,11 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.santa.board.mapper.BoardMapper">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.santa.reply.mapper.ReplyMapper">
 
-    <select id="list" resultMap="boardVO2"></select>
-<resultMap id="boardVO2" type="com.example.santa.board.vo.BoardVO">
-    <id column="board_id" property="boardId"></id>
-    <result column="board_type" property="boardType"></result>
-</resultMap>
+    <insert id="insertReply" parameterType="com.example.santa.reply.vo.ReplyVO"
+            keyProperty="replyId">
+        INSERT INTO reply (board_id, author_id, content)
+        VALUES (#{boardId}, #{authorId}, #{content})
+    </insert>
+
+
+    <!-- 댓글 수정 -->
+    <update id="updateReply" parameterType="com.example.santa.reply.vo.ReplyVO">
+        UPDATE reply SET content = #{content} WHERE reply_id = #{replyId}
+    </update>
+
+
+    <!-- 댓글 삭제 -->
+    <delete id="deleteReply" parameterType="int">
+        DELETE FROM reply WHERE reply_id = #{replyId}
+    </delete>
+
+    <!-- 특정 게시글에 속한 모든 댓글 조회 -->
+    <select id="selectReplyByBoardId" parameterType="int"
+            resultMap="replyVO2">
+        SELECT * FROM reply WHERE board_id = #{boardId} ORDER BY reply_id ASC
+    </select>
+
+
+
+    <resultMap id="replyVO2" type="com.example.santa.reply.vo.ReplyVO">
+        <id column="reply_id" property="replyId"></id>
+        <result column="board_id" property="boardId"></result>
+        <result column="author_id" property="authorId"></result>
+        <result column="content" property="content"></result>
+    </resultMap>
 
 </mapper>

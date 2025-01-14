@@ -5,21 +5,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data //get/set, toString코드 자동 생성
-@NoArgsConstructor //기본 생성자 자동 생성
-@AllArgsConstructor //모든 멤버변수 생성자 자동 생성
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class BoardVO {
-    private int board_id;
-    private String board_type;
-    private int author_id;
+    private int boardId;
+    private String boardType;
+    private int authorId;
     private String title;
-    private String content;
-    private int parent_id;
-    private String created_at;
-    private String updated_at;
+    private String content; //리스트일 때는 content빼고
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
 }
-
 
 
