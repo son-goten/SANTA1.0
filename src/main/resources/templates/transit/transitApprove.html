@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<body>
+<div class="page-inner" layout:fragment="content">
+    <div class="page-header">
+        <h3 class="fw-bold mb-3">배송 관리</h3>
+        <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+                <a href="#">
+                    <i class="icon-home"></i>
+                </a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">배송 관리</a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">배송 승인</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card border-success">
+                <div class="card-header bg-danger text-white text-center">
+                    <h4 class="card-title m-0">🎄 배송 승인 🎅</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table
+                    id="basic-datatables"
+                    class="display table table-striped table-hover"
+            >
+                <!-- 테이블 헤더 -->
+                <thead>
+                <tr>
+                    <!-- 체크박스 칼럼 -->
+                    <th><input type="checkbox" id="select-all"></th> <!-- 전체 선택 -->
+                    <th>배송ID</th>
+                    <th>배송상태</th>
+                    <th>출고승인일</th>
+                    <th>배송수량</th>
+                    <th>창고이름</th>
+                    <th>창고주소</th>
+                    <th>지점이름</th>
+                    <th>지점주소</th>
+                </tr>
+                </thead>
+
+                <!-- 테이블 바디 -->
+                <tbody>
+                <!-- 상태가 '배송대기'인 데이터만 렌더링 -->
+                <tr th:each="TransitDTO : ${list}" th:if="${TransitDTO.transitStatus} == '배송대기'">
+                    <!-- 체크박스 칼럼 -->
+                    <td><input type="checkbox" name="select-row" th:value="${TransitDTO.transitId}"></td>
+
+                    <!-- 나머지 데이터 -->
+                    <td th:text="${TransitDTO.transitId}" class="text-center"></td>
+                    <td th:text="${TransitDTO.transitStatus}" class="text-center"></td>
+                    <td th:text="${TransitDTO.formattedTransitDate}" class="text-center"></td>
+                    <td th:text="${TransitDTO.transitQuantity}" class="text-center"></td>
+                    <td th:text="${TransitDTO.warehouseName}" class="text-center"></td>
+                    <td th:text="${TransitDTO.warehouseLocation}" class="text-center"></td>
+                    <td th:text="${TransitDTO.branchName}" class="text-center"></td>
+                    <td th:text="${TransitDTO.branchLocation}" class="text-center"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- 스크립트 블록 -->
+<th:block layout:fragment="script">
+    <!-- DataTables 초기화 및 전체 선택 기능 -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // DataTables 초기화
+            $("#basic-datatables").DataTable();
+
+            // 전체 선택/해제 기능
+            $("#select-all").on("click", function () {
+                $("input[name='select-row']").prop("checked", this.checked);
+            });
+        });
+    </script>
+</th:block>
+
+</body>
+</html>
