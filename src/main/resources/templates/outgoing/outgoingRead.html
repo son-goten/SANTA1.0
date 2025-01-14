@@ -79,9 +79,7 @@
         <thead>
         <tr>
           <th>출고ID</th>
-          <th>주문ID</th>
           <th>출고날짜</th>
-          <th>출고상태</th>
           <th>창고이름</th>
           <th>지점이름</th>
           <th>카테고리</th>
@@ -89,22 +87,27 @@
           <th>출고수량</th>
           <th>상품가격</th>
           <th>총가격</th>
+          <th>출고상태</th>
         </tr>
         </thead>
         <tbody>
         <!-- 반복문 -->
         <tr th:each="OutgoingDTO : ${list}">
           <th th:text="${OutgoingDTO.outgoingId}" class="text-center"></th>
-          <td th:text="${OutgoingDTO.orderId}" class="text-center"></td>
-          <td th:text="${OutgoingDTO.outgoingDate}"  class="text-center"></td>
-          <td th:text="${OutgoingDTO.outgoingStatus}"  class="text-center"></td>
-          <td th:text="${OutgoingDTO.warehouseName}"  class="text-center"></td>
-          <td th:text="${OutgoingDTO.branchName}"  class="text-center"></td>
-          <td th:text="${OutgoingDTO.productCategory}"  class="text-center"></td>
-          <td th:text="${OutgoingDTO.productName}"  class="text-center"></td>
-          <td th:text="${OutgoingDTO.outgoingQuantity}"  class="text-center"></td>
-          <td th:text="${OutgoingDTO.productPrice}"  class="text-center"></td>
-          <td th:text="${OutgoingDTO.totalPrice}"  class="text-center"></td>
+          <td th:text="${OutgoingDTO.formattedOutgoingDate}" class="text-center"></td>
+          <td th:text="${OutgoingDTO.warehouseName}" class="text-center"></td>
+          <td th:text="${OutgoingDTO.branchName}" class="text-center"></td>
+          <td th:text="${OutgoingDTO.productCategory}" class="text-center"></td>
+          <td th:text="${OutgoingDTO.productName}" class="text-center"></td>
+          <td th:text="${OutgoingDTO.outgoingQuantity}" class="text-center"></td>
+          <td th:text="${OutgoingDTO.formattedProductPrice}" class="text-center"></td>
+          <td th:text="${OutgoingDTO.formattedTotalPrice}" class="text-center"></td>
+          <!-- 출고 상태에 따라 동적으로 클래스 적용 -->
+          <td th:text="${OutgoingDTO.outgoingStatus}"
+              th:classappend="${OutgoingDTO.outgoingStatus == '승인' ? 'text-success fw-bold'
+            : (OutgoingDTO.outgoingStatus == '대기' ? 'text-primary fw-bold'
+            : (OutgoingDTO.outgoingStatus == '거절' ? 'text-danger fw-bold' : ''))}"
+              class="text-center"></td>
         </tr>
         </tbody>
       </table>
@@ -188,4 +191,4 @@
     // });
   </script>
 </th:block>
-</html>>
+</html>

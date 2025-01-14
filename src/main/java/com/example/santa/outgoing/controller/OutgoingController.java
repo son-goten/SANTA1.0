@@ -2,6 +2,7 @@ package com.example.santa.outgoing.controller;
 
 import com.example.santa.outgoing.service.OutgoingService;
 import com.example.santa.outgoing.vo.OutgoingDTO;
+import com.example.santa.transit.vo.TransitDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
@@ -44,6 +45,15 @@ public class OutgoingController {
         System.out.println("=============list========" + list);
         return list;
 
+    }
+
+    @GetMapping("/outgoingApprove")
+    public String readOutgoingApprove(Model model) {
+        List<OutgoingDTO> list = outgoingService.findAllOutgoing();
+        System.out.println("list >>>>> " + list);
+        model.addAttribute("list", list);
+
+        return "/outgoing/outgoingApprove";
     }
 
 

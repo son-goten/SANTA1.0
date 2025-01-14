@@ -20,7 +20,7 @@
 
 <!--전체 출고 조회-->
     <select id="findAllOutgoing"
-            parameterType="string"
+
             resultMap="OutgoingDetailsResult">
         SELECT
             o.outgoing_id,
