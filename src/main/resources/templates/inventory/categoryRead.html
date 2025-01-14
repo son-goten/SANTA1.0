@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<body>
+<div class="page-inner" layout:fragment="content">
+    <div class="page-header">
+        <h3 class="fw-bold mb-3">재고 관리</h3>
+        <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+                <a href="#">
+                    <i class="icon-home"></i>
+                </a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">재고 관리</a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">품목별 재고 조회</a>
+            </li>
+        </ul>
+    </div>
+    <div class="row g-4">
+        <!-- 필터 카드 -->
+        <div class="col-lg-12">
+            <div class="card border-success">
+                <!-- 카드 헤더 -->
+                <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+                    <!-- 제목 -->
+                    <h4 class="card-title m-0 text-center flex-grow-1">품목별 재고 조회</h4>
+                    <!-- 버튼 -->
+                    <button class="btn btn-primary btn-lg px-4 ms-3" onclick="readProductInventory()">전체 조회</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table
+                    id="basic-datatables"
+                    class="display table table-striped table-hover"
+            >
+                <thead>
+                <tr id="">
+                    <th>상품ID</th>
+                    <th>상품명</th>
+                    <th>카테고리명</th>
+                    <th>제조사명</th>
+                    <th>창고명</th>
+                    <th>재고 수량</th>
+                    <th>상품 가격</th>
+                </tr>
+                </thead>
+                <tbody id="tbody">
+                <!-- 비동기로 반복문 써서 그려줌  -->
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+<th:block layout:fragment="script">
+    <script>
+
+        //중복 되는 코드 부분 처리
+        // 공통: Axios 요청 처리
+        function sendRequest(url, method, data, callback) {
+            axios({
+                method: method,
+                url: url,
+                data: data
+            })
+                .then(response => {
+                    if (response.data && response.data.length > 0) {
+                        callback(response.data); // 데이터 처리 콜백 호출
+                    } else {
+                        console.log("조건에 맞는 데이터가 없습니다.");
+                    }
+                })
+                .catch(error => {
+                    console.error("요청 중 에러 발생:", error);
+                    console.log("요청 처리 중 문제가 발생했습니다.");
+                });
+        }
+
+        // 공통: 테이블 데이터 렌더링
+        function renderTable(tbodyId, data) {
+            const tbody = document.getElementById(tbodyId);
+            if (!tbody) {
+                console.error(`${tbodyId}를 찾을 수 없습니다.`);
+                return;
+            }
+
+            let body = "";
+            data.forEach(item => {
+
+                body += `
+            <tr>
+                <td class="text-center">${item.productId}</td>
+                <td class="text-center">${item.productName}</td>
+                <td class="text-center">${item.categoryName}</td>
+                <td class="text-center">${item.manufacturerName}</td>
+                <td class="text-center">${item.warehouseName}</td>
+                <td class="text-center">${item.warehouseQuantity}</td>
+                <td class="text-center">${item.price}원</td>
+            </tr>
+        `;
+            });
+
+            tbody.innerHTML = body;
+        }
+
+        //품목별 재고 list
+        function readProductInventory() {
+            sendRequest("/inventory/readProductInventory", "get", null, data => {
+                renderTable("tbody", data);
+                $("#basic-datatables").DataTable();
+            });
+        }
+
+        readProductInventory();
+    </script>
+</th:block>
+</html>
