@@ -113,10 +113,6 @@
 
             let body = "";
             data.forEach(item => {
-                // 상태에 따라 Bootstrap 텍스트 색상 클래스 설정
-                const statusClass = item.orderStatus === "대기" ? "text-warning" :
-                    item.orderStatus === "완료" ? "text-success" :
-                        "text-danger";
 
                 body += `
             <tr>
@@ -131,10 +127,9 @@
             tbody.innerHTML = body;
         }
 
-
-        //재고 list
+        //창고별 재고 list
         function readInventory() {
-            sendRequest("/order/readInventory", "get", null, data => {
+            sendRequest("/inventory/readInventory", "get", null, data => {
                 renderTable("tbody", data);
             });
         }
@@ -154,7 +149,7 @@
                 return;
             }
 
-            sendRequest("/order/searchByPendingProductName", "post", { productName }, data => {
+            sendRequest("/inventory/searchByProductName", "post", { productName }, data => {
                 renderTable("tbody", data);
             });
         }
@@ -163,7 +158,6 @@
         function addWarehouse(){
 
         }
-
 
         readInventory();
     </script>
