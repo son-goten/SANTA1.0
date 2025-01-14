@@ -42,7 +42,7 @@
 
                 <!-- Logo image -->
                 <!-- login ok -->
-                <a href="/home" class="logo">
+                <a href="/home/home" class="logo">
                     <img
                             src="/assets/img/santa/santaLogo.png"
                             alt="navbar brand"
@@ -74,7 +74,7 @@
                 <ul class="nav nav-secondary">
                     <li class="nav-item">
                         <a
-                                href="/home"
+                                href="/home/home"
                                 class="collapsed"
                                 aria-expanded="false"
                         >
@@ -99,18 +99,13 @@
                         <div class="collapse" id="products">
                             <ul class="nav nav-collapse ">
                                 <li>
-                                    <a class="sidebar-link" href="/inventory/warehouseManagement">
-                                        <span class="sub-item">창고별 재고 관리</span>
+                                    <a class="sidebar-link" href="/inventory/warehouseRead">
+                                        <span class="sub-item">창고별 재고 조회</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="sidebar-link" href="/inventory/categoryManagement">
-                                        <span class="sub-item">품목별 재고 관리</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="sidebar-link" href="/inventory/historyManagement">
-                                        <span class="sub-item">재고 이력 관리</span>
+                                    <a class="sidebar-link" href="/inventory/categoryRead">
+                                        <span class="sub-item">품목별 재고 조회</span>
                                     </a>
                                 </li>
                             </ul>
@@ -155,13 +150,13 @@
                         <div class="collapse" id="orders">
                             <ul class="nav nav-collapse">
                                 <li>
-                                    <a class="sidebar-link" href="/order/status">
-                                        <span class="sub-item">주문 현황</span>
+                                    <a class="sidebar-link" href="/order/read">
+                                        <span class="sub-item">주문 조회</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="sidebar-link" href="/order/details">
-                                        <span class="sub-item">주문 상세 관리</span>
+                                    <a class="sidebar-link" href="/order/approval">
+                                        <span class="sub-item">주문 승인</span>
                                     </a>
                                 </li>
 
@@ -202,8 +197,13 @@
                         <div class="collapse" id="board">
                             <ul class="nav nav-collapse">
                                 <li>
-                                    <a class="sidebar-link" href="">
-                                        <span class="sub-item">게시판</span>
+                                    <a class="sidebar-link" href="/notice/notice">
+                                        <span class="sub-item">공지사항</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="sidebar-link" href="/board/board">
+                                        <span class="sub-item">자유 게시판</span>
                                     </a>
                                 </li>
                             </ul>
@@ -211,68 +211,25 @@
                     </li>
 
                     <!-- Menu6 -->
-                    <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#dash">
-                            <i class="fas fa-chart-bar"></i>
-                            <p>대시보드</p>
-                            <span class="caret"></span>
-                        </a>
-                        <div class="collapse" id="dash">
-                            <ul class="nav nav-collapse">
-                                <li>
-                                    <a class="sidebar-link" href="">
-                                        <span class="sub-item">전체 통계</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="sidebar-link" href="/inventory/statistics">
-                                        <span class="sub-item">창고 재고 통계</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="sidebar-link" href="/incoming/statistics">
-                                        <span class="sub-item">입고 통계</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="sidebar-link" href="/outgoing/statistics">
-                                        <span class="sub-item">출고 통계</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="sidebar-link" href="/order/statistics">
-                                        <span class="sub-item">주문 통계</span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a class="sidebar-link" href="">
-                                        <span class="sub-item">배송 통계</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-
-                    <!-- Menu7 -->
                     <!-- 권한이 root 관리자 일 시 보이는 menu -->
                     <li class="nav-item">
-                        <a data-bs-toggle="collapse" href="#employee">
+                        <a data-bs-toggle="collapse" href="#admin">
                             <i class="fas fa-users"></i>
                             <p>관리자 메뉴</p>
                             <span class="caret"></span>
                         </a>
-                        <div class="collapse" id="employee">
+                        <div class="collapse" id="admin">
                             <ul class="nav nav-collapse subnav">
                                 <li>
-                                    <a class="sidebar-link" href="">
+                                    <a class="sidebar-link" href="/admin/management">
                                         <span class="sub-item">직원 관리</span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a class="sidebar-link" href="">
-                                        <span class="sub-item">로그 관리</span>
-                                    </a>
-                                </li>
+                                <!--                                <li>-->
+                                <!--                                    <a class="sidebar-link" href="">-->
+                                <!--                                        <span class="sub-item">로그 관리</span>-->
+                                <!--                                    </a>-->
+                                <!--                                </li>-->
                             </ul>
                         </div>
                     </li>
@@ -290,7 +247,7 @@
                 <!-- Logo Header -->
                 <!-- 화면 크기 줄어들었을 시의 Header -->
                 <div class="logo-header" data-background-color="red">
-                    <a href="/home" class="logo">
+                    <a href="/home/home" class="logo">
                         <img
                                 src="/assets/img/santa/santaLogo.png"
                                 alt="navbar brand"
@@ -363,7 +320,7 @@
                             </ul>
                         </li>
 
-                       <!-- 알람 메세지 기능 코드 넣는 곳 (시간 남으면 구현할 것 ) -->
+                        <!-- 알람 메세지 기능 코드 넣는 곳 (시간 남으면 구현할 것 ) -->
 
                         <!-- 빠른 이동 -->
                         <li class="nav-item topbar-icon dropdown hidden-caret">
@@ -388,7 +345,7 @@
                                                     <div class="avatar-item bg-danger rounded-circle">
                                                         <i class="far fa-calendar-alt"></i>
                                                     </div>
-                                                    <span class="text">Calendar</span>
+                                                    <span class="text">창고별 재고 관리</span>
                                                 </div>
                                             </a>
                                             <a class="col-6 col-md-4 p-0" href="#">
@@ -469,11 +426,11 @@
                         </li>
 
                         <!-- 로그인 버튼 -->
-<!--                        <li class="nav-item topbar-user hidden-caret" id="login-button" style="display: flex;">-->
-<!--                            <a class="nav-link" href="/login">-->
-<!--                                <span>로그인</span>-->
-<!--                            </a>-->
-<!--                        </li>-->
+                        <!--                        <li class="nav-item topbar-user hidden-caret" id="login-button" style="display: flex;">-->
+                        <!--                            <a class="nav-link" href="/login">-->
+                        <!--                                <span>로그인</span>-->
+                        <!--                            </a>-->
+                        <!--                        </li>-->
                         <!-- *************************************** End Login *************************************** -->
 
                     </ul>
@@ -490,22 +447,35 @@
         </div>
         <!-- *************************************** End content *************************************** -->
 
-
         <!-- *************************************** Start Footer *************************************** -->
         <footer class="footer" layout:fragment="footer">
             <div class="container-fluid d-flex justify-content-between">
                 <nav class="pull-left">
-                    <ul class="nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="http://www.themekita.com">
-                                ThemeKita
+                    <ul class="nav justify-content-center">
+                        <li class="nav-item mx-2">
+                            <a class="text-black text-decoration-none" href="https://github.com/team-member1" target="_blank" rel="noopener">
+                                <i class="fab fa-github"></i> 김근영
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"> Help </a>
+                        <li class="nav-item mx-2">
+                            <a class="text-black text-decoration-none" href="https://github.com/team-member2" target="_blank" rel="noopener">
+                                <i class="fab fa-github"></i> 김주일
+                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"> Licenses </a>
+                        <li class="nav-item mx-2">
+                            <a class="text-black text-decoration-none" href="https://github.com/Hyun7en/SANTA1.0" target="_blank" rel="noopener">
+                                <i class="fab fa-github"></i> 고병현
+                            </a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="text-black text-decoration-none" href="https://github.com/team-member4" target="_blank" rel="noopener">
+                                <i class="fab fa-github"></i> 김희재
+                            </a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="text-black text-decoration-none" href="https://github.com/team-member5" target="_blank" rel="noopener">
+                                <i class="fab fa-github"></i> 박상협
+                            </a>
                         </li>
                     </ul>
                 </nav>
@@ -523,6 +493,9 @@
 <script src="/assets/js/core/jquery-3.7.1.min.js"></script>
 <script src="/assets/js/core/popper.min.js"></script>
 <script src="/assets/js/core/bootstrap.min.js"></script>
+
+<!-- Tmap API -->
+<script th:src="'https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey='+${tmapApiKey}"></script>
 
 <!-- axios 비동기 통신용 -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -543,72 +516,71 @@
 <script src="/assets/js/kaiadmin.min.js"></script>
 
 <script>
-        const userInfoElement = document.getElementById('user-info');
-        const usernameElement = document.getElementById('username');
-        const loginButtonElement = document.getElementById('login-button');
-        const logoutButtonElement = document.getElementById('logout');
+    const userInfoElement = document.getElementById('user-info');
+    const usernameElement = document.getElementById('username');
+    const loginButtonElement = document.getElementById('login-button');
+    const logoutButtonElement = document.getElementById('logout');
 
-        // 사용자 정보를 가져오는 API 호출
-        axios.get('/api/login/user')
-            .then(response => {
-                const user = response.data;
+    // 사용자 정보를 가져오는 API 호출
+    axios.get('/api/login/user')
+        .then(response => {
+            const user = response.data;
 
-                // 사용자 정보 표시
-                userInfoElement.style.display = 'flex';
-                usernameElement.innerText = user.name; // 사용자 이름 설정
+            // 사용자 정보 표시
+            userInfoElement.style.display = 'flex';
+            usernameElement.innerText = user.name; // 사용자 이름 설정
 
-                // 로그인 버튼 숨기기
-                loginButtonElement.style.display = 'none';
-            })
-            .catch(error => {
-                console.error("사용자 정보를 가져오지 못했습니다:", error);
+            // 로그인 버튼 숨기기
+            loginButtonElement.style.display = 'none';
+        })
+        .catch(error => {
+            console.error("사용자 정보를 가져오지 못했습니다:", error);
 
-                // 로그인 버튼 표시
-                loginButtonElement.style.display = 'flex';
-                userInfoElement.style.display = 'none';
-            });
+            // 로그인 버튼 표시
+            loginButtonElement.style.display = 'flex';
+            userInfoElement.style.display = 'none';
+        });
 
-        // 로그아웃 처리
-        if (logoutButtonElement) {
-            logoutButtonElement.addEventListener('click', function (e) {
-                e.preventDefault();
-                axios.post('/login/logout')
-                    .then(() => {
-                        // 서버 리다이렉트에 따라 페이지 이동
-                        window.location.href = "/login";
-                    })
-                    .catch(error => {
-                        console.error("로그아웃 실패:", error);
-                        alert("로그아웃에 실패했습니다. 다시 시도해주세요.");
-                    });
-            });
-        };
+    // 로그아웃 처리
+    if (logoutButtonElement) {
+        logoutButtonElement.addEventListener('click', function (e) {
+            e.preventDefault();
+            axios.post('/login/logout')
+                .then(() => {
+                    // 서버 리다이렉트에 따라 페이지 이동
+                    window.location.href = "/login";
+                })
+                .catch(error => {
+                    console.error("로그아웃 실패:", error);
+                    alert("로그아웃에 실패했습니다. 다시 시도해주세요.");
+                });
+        });
+    };
 
-        //sidebar toggle func
-        function addSidebar() {
-            // 현재 URL 가져오기
-            const currentPath = location.pathname;
+    //sidebar toggle func
+    function addSidebar() {
+        // 현재 URL 가져오기
+        const currentPath = location.pathname;
 
-            // 모든 사이드바 링크 가져오기
-            const sidebarLinks = document.querySelectorAll(".sidebar-link");
+        // 모든 사이드바 링크 가져오기
+        const sidebarLinks = document.querySelectorAll(".sidebar-link");
 
-            // 링크 중 현재 URL과 일치하는 항목에 'active' 추가
-            sidebarLinks.forEach(link => {
-                if (link.getAttribute("href") === currentPath) {
-                    link.classList.add("active");
-                    const parentCollapse = link.closest(".collapse");
-                    if (parentCollapse) {
-                        parentCollapse.classList.add("show"); // 부모 메뉴 펼치기
-                    }
+        // 링크 중 현재 URL과 일치하는 항목에 'active' 추가
+        sidebarLinks.forEach(link => {
+            if (link.getAttribute("href") === currentPath) {
+                link.classList.add("active");
+                const parentCollapse = link.closest(".collapse");
+                if (parentCollapse) {
+                    parentCollapse.classList.add("show"); // 부모 메뉴 펼치기
                 }
-            });
-        };
+            }
+        });
+    };
 
-        addSidebar();
+    addSidebar();
 
 
 </script>
-
 <!-- Core theme JS-->
 <th:block layout:fragment="script">
 

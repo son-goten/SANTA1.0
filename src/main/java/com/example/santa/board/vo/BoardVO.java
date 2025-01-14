@@ -1,4 +1,4 @@
-package com.example.santa.Board.vo;
+package com.example.santa.board.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
