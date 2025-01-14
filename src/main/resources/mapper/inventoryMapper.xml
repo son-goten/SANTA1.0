@@ -3,4 +3,71 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.santa.inventory.mapper.InventoryMapper">
 
+    <resultMap id="WarehouseInventoryResultMap" type="com.example.santa.inventory.vo.InventoryDTO">
+        <result property="productId" column="product_id"/>
+        <result property="productName" column="product_name"/>
+        <result property="capacity" column="capacity"/>
+        <result property="inventoryQuantity" column="inventory_quantity"/>
+        <result property="warehouseName" column="warehouse_name"/>
+        <result property="warehouseQuantity" column="warehouse_quantity"/>
+        <result property="categoryName" column="category_name"/>
+        <result property="manufacturerName" column="manufacturer_name"/>
+        <result property="price" column="product_price"/>
+    </resultMap>
+
+    <!--    *************************************************-->
+    <!--    ******************** 창고별 재고 조회 **************-->
+    <!--    *************************************************-->
+    <!-- 창고별 재고 list(창고id 있을 시/없을 시) -->
+    <select id="readInventory">
+
+    </select>
+
+    <!-- 상품명 검색 -->
+
+    <!-- 창고 row 추가 -->
+
+    <!--    *************************************************-->
+    <!--    ******************** 품목별 재고 조회 **************-->
+    <!--    *************************************************-->
+
+    <!-- 품목별 재고 list -->
+    <select id="readProductInventory" parameterType="map" resultMap="WarehouseInventoryResultMap">
+        SELECT
+        p.product_id AS product_id,
+        p.name AS product_name,
+        c.name AS category_name,
+        m.name AS manufacturer_name,
+        w.name AS warehouse_name,
+        w.capacity AS capacity,
+        wi.quantity AS inventory_quantity,
+        wi.quantity AS warehouse_quantity,
+        p.price AS product_price
+        FROM
+        Warehouse_Inventory wi
+        JOIN
+        Products p ON wi.product_id = p.product_id
+        LEFT JOIN
+        Categories c ON p.category_id = c.category_id
+        LEFT JOIN
+        Manufacturers m ON p.manufacturer_id = m.manufacturer_id
+        LEFT JOIN
+        Warehouses w ON wi.warehouse_id = w.warehouse_id
+<!--        <where>-->
+<!--            <if test="productId != null">-->
+<!--                AND p.product_id = #{productId}-->
+<!--            </if>-->
+<!--            <if test="productName != null and productName != ''">-->
+<!--                AND p.name LIKE CONCAT('%', #{productName}, '%')-->
+<!--            </if>-->
+<!--            <if test="categoryId != null">-->
+<!--                AND p.category_id = #{categoryId}-->
+<!--            </if>-->
+<!--            <if test="warehouseId != null">-->
+<!--                AND w.warehouse_id = #{warehouseId}-->
+<!--            </if>-->
+<!--        </where>-->
+        ORDER BY p.product_id
+    </select>
+
 </mapper>

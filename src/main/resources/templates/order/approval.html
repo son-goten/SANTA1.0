@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<body>
+<div class="page-inner" layout:fragment="content">
+    <div class="page-header">
+        <h3 class="fw-bold mb-3">주문 관리</h3>
+        <ul class="breadcrumbs mb-3">
+            <li class="nav-home">
+                <a href="#">
+                    <i class="icon-home"></i>
+                </a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">주문 관리</a>
+            </li>
+            <li class="separator">
+                <i class="icon-arrow-right"></i>
+            </li>
+            <li class="nav-item">
+                <a href="#">주문 승인</a>
+            </li>
+        </ul>
+    </div>
+    <!-- 승인 대기 중인 주문들 -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card border-success">
+                <div class="card-header bg-danger text-white text-center">
+                    <h4 class="card-title m-0">주문 승인</h4>
+                </div>
+                <div class="card-body bg-white">
+                    <!-- 필터 섹션 -->
+                    <div class="p-3 bg-light border rounded">
+                        <div class="row g-3">
+                            <!-- 주문일자 -->
+                            <div class="col-md-6 d-flex align-items-center">
+                                <label for="start-date" class="form-label fw-bold text-success me-2 mb-0">주문일자</label>
+                                <input type="date" id="start-date" class="form-control w-25 me-2">
+                                <input type="date" id="end-date" class="form-control w-25 me-2">
+                                <button class="btn btn-danger" onclick="searchByPendingOrderDate()">검색</button>
+                            </div>
+
+                            <!-- 상품명 -->
+                            <div class="col-md-6 d-flex align-items-center">
+                                <label for="product-name" class="form-label fw-bold text-success me-2 mb-0">상품명</label>
+                                <input type="text" id="product-name" class="form-control w-75 me-2">
+                                <button class="btn btn-danger" onclick="searchByPendingProductName()">검색</button>
+                            </div>
+
+                            <!-- 주문지점 + 전체 조회 -->
+                            <div class="col-md-12 d-flex align-items-center justify-content-between flex-wrap">
+                                <div class="d-flex align-items-center flex-grow-1">
+                                    <label for="branch" class="form-label fw-bold text-success me-3 mb-0">주문지점</label>
+                                    <input type="text" id="branch" class="form-control me-3" style="flex: 1; min-width: 300px;">
+                                    <button class="btn btn-danger px-4" onclick="searchByPendingBranchName()">검색</button>
+                                </div>
+                                <button class="btn btn-primary px-4 ms-3" onclick="readPendingOrders()">전체 조회</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table
+                    id="basic-datatables"
+                    class="display table table-striped table-hover"
+            >
+                <thead>
+                <tr>
+                    <th>주문일자</th>
+                    <th>주문ID</th>
+                    <th>지점명</th>
+                    <th>창고명</th>
+                    <th>상품명</th>
+                    <th>재고수량</th>
+                    <th>주문수량</th>
+                    <th>상품가격</th>
+                    <th>총가격</th>
+                    <th>주문상태</th>
+                    <th>승인/거절</th>
+                </tr>
+                </thead>
+                <tbody id="tbody">
+                <!-- 비동기로 반복문 써서 그려줌  -->
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+<th:block layout:fragment="script">
+    <script>
+
+        //중복 되는 코드 부분 처리
+        // 공통: Axios 요청 처리
+        function sendRequest(url, method, data, callback) {
+            axios({
+                method: method,
+                url: url,
+                data: data
+            })
+                .then(response => {
+                    console.log("Response received:", response.data);
+
+                    // response.data가 비어 있거나 유효하지 않은 경우 처리
+                    if (response.data) {
+                        callback(response.data); // 데이터 처리 콜백 호출
+                    } else {
+                        console.log("조건에 맞는 데이터가 없습니다.");
+                    }
+                })
+                .catch(error => {
+                    console.error("요청 중 에러 발생:", error);
+                    console.log("요청 처리 중 문제가 발생했습니다.");
+                });
+        }
+
+        // 공통: 테이블 데이터 렌더링
+        function renderTable(tbodyId, data) {
+            const tbody = document.getElementById(tbodyId);
+            if (!tbody) {
+                console.error(`${tbodyId}를 찾을 수 없습니다.`);
+                return;
+            }
+
+            let body = "";
+            data.forEach(item => {
+                // 상태에 따라 Bootstrap 텍스트 색상 클래스 설정
+                const statusClass = item.orderStatus === "대기" ? "text-warning" :
+                    item.orderStatus === "승인" ? "text-success" :
+                        "text-danger";
+
+                body += `
+            <tr>
+                <td class="text-center">${item.orderDate}</td>
+                <td class="text-center">${item.orderId}</td>
+                <td class="text-center">${item.branchName}</td>
+                <td class="text-center">${item.warehouseName}</td>
+                <td class="text-center">${item.productName}</td>
+                <td id="inventoryQuantity-${item.orderId}" class="text-center">${item.inventoryQuantity}</td>
+                <td id="quantity-${item.orderId}" class="text-center">${item.quantity}</td>
+                <td class="text-center">${item.price}원</td>
+                <td class="text-center">${item.totalPrice}원</td>
+                <td class="text-center ${statusClass}">${item.orderStatus}</td>
+                 <td class="text-center">
+                    <div class="d-flex justify-content-center gap-2">
+                        <button class="btn btn-success btn-sm text-nowrap px-3" onclick="updateOrderStatus('${item.orderId}', '승인')">승인</button>
+                        <button class="btn btn-danger btn-sm text-nowrap px-3" onclick="updateOrderStatus('${item.orderId}', '거절')">거절</button>
+                    </div>
+                </td>
+            </tr>
+        `;
+            });
+
+            tbody.innerHTML = body;
+        }
+
+
+        //승인 대기 주문 list
+        function readPendingOrders() {
+
+            sendRequest("/order/readPendingOrders", "get", null, data => {
+                renderTable("tbody", data);
+
+            });
+        }
+
+        //주문 승인/거절 요청
+        function updateOrderStatus(orderId, orderStatus) {
+            const inventoryQuantity = parseInt(document.getElementById(`inventoryQuantity-${orderId}`).innerText, 10);
+            const quantity = parseInt(document.getElementById(`quantity-${orderId}`).innerText, 10);
+            // 조건 확인
+            if (orderStatus === '승인' && quantity > inventoryQuantity) {
+                swal("", "주문수량이 재고수량보다 많아 승인을 할 수 없습니다.", {
+                    buttons: {
+                        confirm: {
+                            className: 'btn btn-success btn-sm text-nowrap px-3'
+                        }
+                    },
+                });
+                return;
+            }
+
+            sendRequest("/order/updateOrderStatus", "post", { orderId, orderStatus }, data => {
+                if(orderStatus === '승인') {
+
+                    swal("승인 완료", "주문이 승인 완료되었습니다.", {
+                        buttons: {
+                            confirm: {
+                                className: 'btn btn-success btn-sm text-nowrap px-3'
+                            }
+                        },
+                    });
+                }else{
+                    swal("거절 완료", "주문이 거절 완료되었습니다.", {
+                        buttons: {
+                            confirm: {
+                                className: 'btn btn-danger btn-sm text-nowrap px-3'
+                            }
+                        },
+                    });
+                }
+                readPendingOrders(); // 테이블 갱신(상태 변경 시켜서)
+            });
+        }
+
+        // 주문일자 검색
+        function searchByPendingOrderDate() {
+            const startDate = document.getElementById("start-date").value;
+            const endDate = document.getElementById("end-date").value;
+
+            if (!startDate || !endDate) {
+                swal("","시작일자와 종료일자를 입력해주세요.", {
+                    buttons: {
+                        confirm: {
+                            className : 'btn btn-danger'
+                        }
+                    },
+                });
+                return;
+            }
+
+            sendRequest("/order/searchByPendingOrderDate", "post", { startDate, endDate }, data => {
+                renderTable("tbody", data);
+            });
+        }
+
+        // 상품명 검색
+        function searchByPendingProductName() {
+            const productName = document.getElementById("product-name").value;
+
+            if (!productName) {
+                swal("","상품명을 입력해주세요.", {
+                    buttons: {
+                        confirm: {
+                            className : 'btn btn-danger'
+                        }
+                    },
+                });
+                return;
+            }
+
+            sendRequest("/order/searchByPendingProductName", "post", { productName }, data => {
+                renderTable("tbody", data);
+            });
+        }
+
+        // 주문지점 검색
+        function searchByPendingBranchName() {
+            const branchName = document.getElementById("branch").value;
+
+            if (!branchName) {
+                swal("","지점을 입력해주세요.", {
+                    buttons: {
+                        confirm: {
+                            className : 'btn btn-danger'
+                        }
+                    },
+                });
+                return;
+            }
+
+            sendRequest("/order/searchByPendingBranchName", "post", { branchName }, data => {
+                renderTable("tbody", data);
+            });
+        }
+
+        readPendingOrders();
+    </script>
+</th:block>
+</html>

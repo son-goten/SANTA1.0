@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<body>
+<div class="page-inner" layout:fragment="content">
+  <div class="page-header">
+    <h3 class="fw-bold mb-3">입/출고 관리</h3>
+    <ul class="breadcrumbs mb-3">
+      <li class="nav-home">
+        <a href="#">
+          <i class="icon-home"></i>
+        </a>
+      </li>
+      <li class="separator">
+        <i class="icon-arrow-right"></i>
+      </li>
+      <li class="nav-item">
+        <a href="#">입/출고 관리</a>
+      </li>
+      <li class="separator">
+        <i class="icon-arrow-right"></i>
+      </li>
+      <li class="nav-item">
+        <a href="#">출고 조회</a>
+      </li>
+    </ul>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card border-success">
+        <div class="card-header bg-danger text-white text-center">
+          <h4 class="card-title m-0">🎄 출고 조회 🎅</h4>
+        </div>
+<!--        <div class="card-body bg-white">-->
+<!--           필터 섹션 -->
+<!--          <div class="p-3 bg-light border rounded">-->
+<!--            <div class="row g-3">-->
+<!--              &lt;!&ndash; 출고일자 / 입고->출고&ndash;&gt;-->
+<!--              <div class="col-md-6 d-flex align-items-center">-->
+<!--                <label for="start-date" class="form-label fw-bold text-success me-2 mb-0">출고일자</label>-->
+<!--                <input type="date" id="start-date" class="form-control w-50 me-2">-->
+<!--                <input type="date" id="end-date" class="form-control w-25 me-2">-->
+<!--                <button class="btn btn-danger">검색</button>-->
+<!--              </div>-->
+
+<!--              &lt;!&ndash; 카테고리 &ndash;&gt;-->
+<!--              <div class="col-md-6 d-flex align-items-center">-->
+<!--                <label for="category" class="form-label fw-bold text-success me-2 mb-0">카테고리</label>-->
+<!--                <input type="text" id="category" class="form-control w-75 me-2">-->
+<!--                <button class="btn btn-danger">검색</button>-->
+<!--              </div>-->
+
+<!--              &lt;!&ndash; 창고 &ndash;&gt;-->
+<!--              <div class="col-md-6 d-flex align-items-center">-->
+<!--                <label for="warehouse" class="form-label fw-bold text-success me-2 mb-0">창고</label>-->
+<!--                <input type="text" id="warehouse" class="form-control w-75 me-2">-->
+<!--                <button class="btn btn-danger">검색</button>-->
+<!--              </div>-->
+
+<!--              &lt;!&ndash; 지점 &ndash;&gt;-->
+<!--              <div class="col-md-6 d-flex align-items-center">-->
+<!--                <label for="branchName" class="form-label fw-bold text-success me-2 mb-0">지점</label>-->
+<!--                <input type="text" id="branchName" class="form-control w-75 me-2">-->
+<!--                <button class="btn btn-danger">검색</button>-->
+<!--              </div>-->
+
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+      </div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table
+              id="basic-datatables"
+              class="display table table-striped table-hover"
+      >
+        <thead>
+        <tr>
+          <th>출고ID</th>
+          <th>출고날짜</th>
+          <th>창고이름</th>
+          <th>지점이름</th>
+          <th>카테고리</th>
+          <th>상품명</th>
+          <th>출고수량</th>
+          <th>상품가격</th>
+          <th>총가격</th>
+          <th>출고상태</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 반복문 -->
+        <tr th:each="OutgoingDTO : ${list}">
+          <th th:text="${OutgoingDTO.outgoingId}" class="text-center"></th>
+          <td th:text="${OutgoingDTO.formattedOutgoingDate}" class="text-center"></td>
+          <td th:text="${OutgoingDTO.warehouseName}" class="text-center"></td>
+          <td th:text="${OutgoingDTO.branchName}" class="text-center"></td>
+          <td th:text="${OutgoingDTO.productCategory}" class="text-center"></td>
+          <td th:text="${OutgoingDTO.productName}" class="text-center"></td>
+          <td th:text="${OutgoingDTO.outgoingQuantity}" class="text-center"></td>
+          <td th:text="${OutgoingDTO.formattedProductPrice}" class="text-center"></td>
+          <td th:text="${OutgoingDTO.formattedTotalPrice}" class="text-center"></td>
+          <!-- 출고 상태에 따라 동적으로 클래스 적용 -->
+          <td th:text="${OutgoingDTO.outgoingStatus}"
+              th:classappend="${OutgoingDTO.outgoingStatus == '승인' ? 'text-success fw-bold'
+            : (OutgoingDTO.outgoingStatus == '대기' ? 'text-primary fw-bold'
+            : (OutgoingDTO.outgoingStatus == '거절' ? 'text-danger fw-bold' : ''))}"
+              class="text-center"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</body>
+<th:block layout:fragment="script">
+  <script>
+    function readBranch() {
+      const branchName = document.getElementById("branchName").value;
+      let tbody = document.getElementById("tbody");
+      axios.post("/outgoing/readBranch", {
+        branchName: branchName
+      }).then(function (response) {
+        console.log(response.data);
+        let json_array = response.data; //[json, json, json]
+        console.log(json_array)
+        let body = "";
+        for (let i  = 0;  i< json_array.length; i++) {
+          console.log(json_array[i]);
+          let json = json_array[i];
+          body = body + `
+                              <tr>
+                                <td class="text-center">${json.outgoingId}</td>
+                                <td class="text-center">${json.orderId}</td>
+                                <td class="text-center">${json.outgoingDate}</td>
+                                <td class="text-center">${json.outgoingStatus}</td>
+                                <td class="text-center">${json.warehouseName}</td>
+                                <td class="text-center">${json.branchName}</td>
+                                <td class="text-center">${json.productCategory}</td>
+                                <td class="text-center">${json.productName}</td>
+                                <td class="text-center">${json.outgoingQuantity}</td>
+                                <td class="text-center">${json.productPrice}</td>
+                                <td class="text-center">${json.totalPrice}</td>
+                            </tr>
+                    `;
+        }
+
+        tbody.innerHTML = body;
+      })
+    }
+
+    function readCategory() {
+      const branchName = document.getElementById("category").value;
+      let tbody = document.getElementById("tbody");
+      axios.post("/outgoing/readCategory", {
+        category: category
+      }).then(function (response) {
+        console.log(response.data);
+        let json_array = response.data; //[json, json, json]
+        console.log(json_array)
+        let body = "";
+        for (let i  = 0;  i< json_array.length; i++) {
+          console.log(json_array[i]);
+          let json = json_array[i];
+          body = body + `
+                              <tr>
+                                <td class="text-center">${json.outgoingId}</td>
+                                <td class="text-center">${json.orderId}</td>
+                                <td class="text-center">${json.outgoingDate}</td>
+                                <td class="text-center">${json.outgoingStatus}</td>
+                                <td class="text-center">${json.warehouseName}</td>
+                                <td class="text-center">${json.branchName}</td>
+                                <td class="text-center">${json.productCategory}</td>
+                                <td class="text-center">${json.productName}</td>
+                                <td class="text-center">${json.outgoingQuantity}</td>
+                                <td class="text-center">${json.productPrice}</td>
+                                <td class="text-center">${json.totalPrice}</td>
+                            </tr>
+                    `;
+        }
+
+        tbody.innerHTML = body;
+      })
+    }
+
+    //$(document).ready(function () {
+    $("#basic-datatables").DataTable({});
+    // });
+  </script>
+</th:block>
+</html>
