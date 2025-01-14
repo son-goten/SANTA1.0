@@ -32,6 +32,9 @@ public interface OrderMapper {
     //주문 승인/거절
     int updateOrderStatus(int orderId, String orderStatus);
 
+    //주문 승인 시 출고 테이블에 추가(출고 대기 상태로)
+    int insertOutgoingPending(int orderId);
+
     // 승인 대기 주문, 주문 일자 검색
     List<OrderDTO> searchByPendingOrderDate(@Param("startDate") String startDate, @Param("endDate") String endDate);
 

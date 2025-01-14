@@ -6,6 +6,7 @@ import com.example.santa.order.vo.OrderDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -62,10 +63,29 @@ public class OrderService {
     }
 
     //주문 승인/거절
+    @Transactional
     public int updateOrderStatus(int orderId, String orderStatus) {
         //orderIdFind() 해서 재고량과 주문량 비교해서 처리한 값 넘겨주기
+        System.out.println(orderStatus);
 
-        return orderMapper.updateOrderStatus(orderId,orderStatus);
+        //orderStatus가 승인이면 출고 대기 등록 / 거절이면 그냥 상태 update
+        // 주문 상태 업데이트
+        int updateResult = orderMapper.updateOrderStatus(orderId, orderStatus);
+        if (updateResult <= 0) {
+            throw new RuntimeException("주문 상태 업데이트 실패");
+        }
+
+        //주문 승인 시 출고 테이블에 추가(출고 대기 상태로, 주문 상태가 '승인'인 경우)
+        if (orderStatus.equals("승인")) {
+            int outgoingResult = orderMapper.insertOutgoingPending(orderId);
+            if (outgoingResult <= 0) {
+                throw new RuntimeException("출고 대기 등록 실패");
+            }
+        }
+
+        System.out.println("주문 처리 완료");
+
+        return updateResult;
     }
 
     // 승인 대기 주문, 주문 일자 검색

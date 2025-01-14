@@ -148,6 +148,19 @@
         WHERE order_id = #{orderId}
     </update>
 
+    <!-- 주문 승인 시 출고 테이블에 추가(출고 대기 상태로) -->
+    <insert id="insertOutgoingPending" parameterType="map">
+        INSERT INTO Outgoing (warehouse_id, product_id, order_id, branch_id, quantity, status)
+        SELECT
+            o.warehouse_id,
+            o.product_id,
+            o.order_id,
+            o.branch_id,
+            o.quantity,
+            '대기'
+        FROM Orders o
+        WHERE o.order_id = #{orderId} AND o.status = '승인';
+    </insert>
 
     <!-- 승인 대기 주문, 주문 일자 검색 -->
     <select id="searchByPendingOrderDate" resultMap="OrderResultMap">
