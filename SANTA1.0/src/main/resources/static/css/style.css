@@ -1,0 +1,108 @@
+/* 전체 배경 */
+body {
+    font-family: 'Arial', sans-serif;
+    background: #f4f7fc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* 폼 컨테이너 */
+.form-container {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+/* 제목 */
+h1 {
+    text-align: center;
+    color: #333333;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+}
+
+/* 폼 그룹 */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* 라벨 */
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    color: #555555;
+}
+
+/* 입력 필드 */
+input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #dddddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+/* 입력 필드 포커스 */
+input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* 버튼 */
+button {
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: #ffffff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* 중복 확인 버튼 */
+.check-btn {
+    margin-left: 10px;
+}
+
+/* 메시지 */
+.message {
+    margin-top: 5px;
+    font-size: 0.9rem;
+    display: block;
+}
+
+/* 제출 버튼 */
+.submit-btn {
+    width: 100%;
+    margin-top: 20px;
+    background-color: #28a745;
+}
+
+.submit-btn:hover {
+    background-color: #218838;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 480px) {
+    .form-container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+}

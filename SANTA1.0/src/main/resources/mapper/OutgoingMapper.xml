@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.santa.outgoing.mapper.OutgoingMapper">
+
+    <!-- OutgoingDetailsDTO에 대한 resultMap 정의 -->
+    <resultMap id="OutgoingDetailsResult" type="com.example.santa.outgoing.vo.OutgoingDetailsDTO">
+        <result column="outgoing_id" property="outgoingId"/>
+        <result column="order_id" property="orderId"/>
+        <result column="outgoing_date" property="outgoingDate"/>
+        <result column="status" property="outgoingStatus"/>
+        <result column="w.name" property="warehouseName"/>
+        <result column="b.name" property="branchName"/>
+        <result column="category" property="productCategory"/>
+        <result column="p.name" property="productName"/>
+        <result column="quantity" property="outgoingQuantity"/>
+        <result column="price" property="productPrice"/>
+        <result column="totalPrice" property="totalPrice"/>
+    </resultMap>
+
+<!--전체 출고 조회-->
+    <select id="findAllOutgoing"
+            resultType="com.example.santa.outgoing.vo.OutgoingDetailsDTO"
+            resultMap="OutgoingDetailsResult">
+        SELECT
+            o.outgoing_id, --출고ID
+            o.order_id, --주문ID
+            o.outgoing_date AS outgoingDate, --출고날짜
+            o.status, --출고상태
+            w.name AS warehouseName, --창고이름
+            b.name AS branchName, --지점이름
+            c.name AS categoryName, --카테고리명
+            p.name AS productName, --상품이름
+            o.quantity, --출고수량
+            p.price, --상품가격
+            (o.quantity * p.price) AS totalPrice --총가격
+        FROM
+            outgoing o
+                JOIN
+            warehouse w ON o.warehouse_id = w.id
+                JOIN
+            branch b ON o.branch_id = b.id
+                JOIN
+            product p ON o.product_id = p.id
+                JOIN
+            category c ON p.category_id = c.id
+        WHERE
+            b.name = #{branchName}
+    </select>
+
+<!--지점별 출고 조회-->
+    <select id="findOutgoingByBranchName"
+            resultType="com.example.santa.outgoing.vo.OutgoingDetailsDTO"
+            resultMap="OutgoingDetailsResult">
+        SELECT
+            o.outgoing_id, --출고ID
+            o.order_id, --주문ID
+            o.outgoing_date AS outgoingDate, --출고날짜
+            o.status, --출고상태
+            w.name AS warehouseName, --창고이름
+            b.name AS branchName, --지점이름
+            c.name AS categoryName, --카테고리명
+            p.name AS productName, --상품이름
+            o.quantity, --출고수량
+            p.price, --상품가격
+            (o.quantity * p.price) AS totalPrice --총가격
+        FROM
+            outgoing o
+                JOIN
+            warehouse w ON o.warehouse_id = w.warehouse_id
+                JOIN
+            branch b ON o.branch_id = b.branch_id
+                JOIN
+            product p ON o.product_id = p.product_id
+                JOIN
+            category c ON p.category_id = c.category_id
+        WHERE
+            b.name = #{branchName}
+    </select>
+
+<!--카테고리별 출고 조회-->
+    <select id="findOutgoingByCategory"
+            resultType="com.example.santa.outgoing.vo.OutgoingDetailsDTO"
+            resultMap="OutgoingDetailsResult">
+        SELECT
+            o.outgoing_id, --출고ID
+            o.order_id, --주문ID
+            o.outgoing_date AS outgoingDate, --출고날짜
+            o.status, --출고상태
+            w.name AS warehouseName, --창고이름
+            b.name AS branchName, --지점이름
+            c.name AS categoryName, --카테고리명
+            p.name AS productName, --상품이름
+            o.quantity, --출고수량
+            p.price, --상품가격
+            (o.quantity * p.price) AS totalPrice --총가격
+        FROM
+            outgoing o
+                JOIN
+            warehouse w ON o.warehouse_id = w.warehouse_id
+                JOIN
+            branch b ON o.branch_id = b.branch_id
+                JOIN
+            product p ON o.product_id = p.product_id
+                JOIN
+            category c ON p.category_id = c.category_id
+        WHERE
+            c.name = #{categoryName}
+    </select>
+
+<!--날짜별 출고 조회-->
+    <select id="findOutgoingByDate"
+            resultType="com.example.santa.outgoing.vo.OutgoingDetailsDTO"
+            resultMap="OutgoingDetailsResult">
+        SELECT
+            o.outgoing_id, --출고ID
+            o.order_id, --주문ID
+            o.outgoing_date AS outgoingDate, --출고날짜
+            o.status, --출고상태
+            w.name AS warehouseName, --창고이름
+            b.name AS branchName, --지점이름
+            c.name AS categoryName, --카테고리명
+            p.name AS productName, --상품이름
+            o.quantity, --출고수량
+            p.price, --상품가격
+            (o.quantity * p.price) AS totalPrice --총가격
+        FROM
+            outgoing o
+                JOIN
+            warehouse w ON o.warehouse_id = w.warehouse_id
+                JOIN
+            branch b ON o.branch_id = b.branch_id
+                JOIN
+            product p ON o.product_id = p.product_id
+                JOIN
+            category c ON p.category_id = c.category_id
+        WHERE
+            o.date BETWEEN :startDate AND :endDate;
+    </select>
+</mapper>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" href="/assets2/img/favicon.png">
+    <link rel="stylesheet" href="/assets2/css/bootstrap.min.css">
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="/assets2/css/all.min.css">
+    <link rel="stylesheet" href="/assets2/css/uf-style.css">
+    <title>SANTA 1.0 SYSTEM</title>
+</head>
+<body>
+<div class="uf-form-signin">
+    <div class="text-center">
+        <a href="https://uifresh.net/"><img src="/assets2/img/logo-fb.png" alt="" width="100" height="100"></a>
+        <h1 class="text-white h3">Account Register</h1>
+    </div>
+
+    <!-- 에러 메시지 출력 영역 -->
+    <div class="alert alert-danger" role="alert" id="errorMessage" style="display: none;">
+        <!-- 에러 메시지가 이곳에 동적으로 표시됩니다 -->
+    </div>
+
+    <!-- 회원가입 폼 -->
+    <form class="mt-4" id="registerForm" method="POST" action="/register/submit">
+        <!-- User ID -->
+        <div class="input-group uf-input-group input-group-lg mb-3">
+            <span class="input-group-text fa fa-user"></span>
+            <input type="text" class="form-control" id="userId" name="userId" placeholder="Your ID" required>
+            <button type="button" class="btn uf-btn-primary" id="checkUserId">Check</button>
+        </div>
+        <p id="userIdMessage" class="text-danger"></p> <!-- User ID Validation Message -->
+
+        <!-- Password -->
+        <div class="input-group uf-input-group input-group-lg mb-3">
+            <span class="input-group-text fa fa-lock"></span>
+            <input type="password" id="password" class="form-control" name="password" placeholder="Password" required>
+        </div>
+
+        <!-- Password Confirmation -->
+        <div class="input-group uf-input-group input-group-lg mb-3">
+            <span class="input-group-text fa fa-lock"></span>
+            <input type="password" id="confirmPassword" class="form-control" placeholder="Password confirmation" required>
+        </div>
+
+        <!-- Name -->
+        <div class="input-group uf-input-group input-group-lg mb-3">
+            <span class="input-group-text fa fa-user-circle"></span>
+            <input type="text" class="form-control" name="name" placeholder="Your Name" required>
+        </div>
+
+        <!-- Email -->
+        <div class="input-group uf-input-group input-group-lg mb-3">
+            <span class="input-group-text fa fa-envelope"></span>
+            <input type="email" class="form-control" name="email" placeholder="Email address" required>
+        </div>
+
+        <!-- Employee Code -->
+        <div class="input-group uf-input-group input-group-lg mb-3">
+            <span class="input-group-text fa fa-id-badge"></span>
+            <input type="text" class="form-control" name="employeeCode" id="employeeCode" placeholder="Employee Code" required>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="d-grid mb-4">
+            <button type="submit" id="submitButton" class="btn uf-btn-primary btn-lg">Sign Up</button>
+        </div>
+
+        <!-- Login Link -->
+        <div class="mt-4 text-center">
+            <span class="text-white">Already a member?</span>
+            <a href="login">Login</a>
+        </div>
+    </form>
+</div>
+
+<!-- JavaScript -->
+<script src="/assets2/js/popper.min.js"></script>
+<script src="/assets2/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // 비밀번호 및 사원 코드 확인 로직
+        $('#registerForm').on('submit', function (e) {
+            const password = $('#password').val();
+            const confirmPassword = $('#confirmPassword').val();
+            const employeeCode = $('#employeeCode').val();
+            let isValid = true;
+
+            // 비밀번호 확인
+            if (password !== confirmPassword) {
+                e.preventDefault(); // 폼 제출 중단
+                $('#errorMessage').text('Passwords do not match. Please try again.').show(); // 에러 메시지 표시
+                isValid = false;
+            }
+
+            // 사원 코드 유효성 검사 (AJAX로 서버 확인)
+            if (employeeCode) {
+                $.ajax({
+                    url: '/register/check-employee-code', // 서버 API 경로
+                    type: 'GET',
+                    async: false, // 동기 요청으로 설정
+                    data: { employeeCode: employeeCode },
+                    success: function (response) {
+                        if (!response.valid) {
+                            e.preventDefault(); // 폼 제출 중단
+                            $('#errorMessage').text('Invalid Employee Code. Please check and try again.').show();
+                            isValid = false;
+                        }
+                    },
+                    error: function () {
+                        e.preventDefault(); // 폼 제출 중단
+                        $('#errorMessage').text('Error checking Employee Code. Please try again later.').show();
+                        isValid = false;
+                    }
+                });
+            } else {
+                e.preventDefault(); // 폼 제출 중단
+                $('#errorMessage').text('Employee Code is required.').show();
+                isValid = false;
+            }
+
+            if (isValid) {
+                $('#errorMessage').hide(); // 에러 메시지가 없는 경우 숨김
+            }
+        });
+
+        // 아이디 중복 체크 AJAX
+        $('#checkUserId').on('click', function () {
+            const userId = $('#userId').val();
+            if (!userId) {
+                $('#userIdMessage').text('Please enter a User ID.');
+                return;
+            }
+
+            $.ajax({
+                url: '/register/check-user-id', // 서버 API 경로
+                type: 'GET',
+                data: { userId: userId },
+                success: function (response) {
+                    if (response.available) {
+                        $('#userIdMessage').text('User ID is available.').attr('style', 'color: green !important;');
+                        $('#submitButton').prop('disabled', false); // Submit 버튼 활성화
+                    } else {
+                        $('#userIdMessage').text('User ID is already taken.').attr('style', 'color: red !important;');
+                        $('#submitButton').prop('disabled', true); // Submit 버튼 비활성화
+                    }
+                },
+                error: function () {
+                    $('#userIdMessage').text('Error checking User ID. Please try again later.').attr('style', 'color: red !important;');
+                    $('#submitButton').prop('disabled', true); // Submit 버튼 비활성화
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

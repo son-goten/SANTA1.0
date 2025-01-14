@@ -1,0 +1,91 @@
+plugins {
+    id 'java'
+    id 'war'
+    id 'org.springframework.boot' version '3.0.2'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+tasks.withType(ProcessResources) {
+    filteringCharset = 'UTF-8'
+}
+
+
+tasks.withType(Test) {
+    systemProperty 'file.encoding', 'UTF-8'
+}
+
+tasks.withType(JavaExec) {
+    systemProperty 'file.encoding', 'UTF-8'
+}
+
+tasks.withType(JavaExec) {
+    jvmArgs '-Dfile.encoding=UTF-8'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Spring Boot Core
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+    // Thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.2.0'
+
+    // Lombok
+    implementation 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    // Database
+    implementation 'mysql:mysql-connector-java:8.0.33'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.1'
+
+    // MongoDB
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+    // Log4j2
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.apache.logging.log4j:log4j-core:2.19.0'
+    implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.19.0'
+
+    // AOP
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.aspectj:aspectjweaver:1.9.19'
+
+    // Testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // Spring Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.security:spring-security-crypto:6.0.4'
+
+    // Gmail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation 'jakarta.mail:jakarta.mail-api:2.0.1'
+    implementation 'com.sun.mail:jakarta.mail:2.0.1'
+
+
+}
+
+configurations.all {
+    exclude group: 'ch.qos.logback', module: 'logback-classic'
+    exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging' // Spring Boot 기본 로깅 제외
+}
