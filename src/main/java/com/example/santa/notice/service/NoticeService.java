@@ -23,13 +23,23 @@ public class NoticeService {
         return noticeMapper.insertNotice(notice);
     }
 
-    public int deleteNotice(NoticeDTO notice) {
-        System.out.println("========noticeDelete======" + notice);
-        return noticeMapper.deleteNotice(notice);
+    public int deleteNotice(int id) {
+        System.out.println("========noticeDelete======" + id);
+        return noticeMapper.deleteNotice(id);
     }
 
     public NoticeDTO selectByNoticeId(int noticeId) {
         System.out.println("========NoticeServiceSelectByNoticeId=======" + noticeId);
         return noticeMapper.selectByNoticeId(noticeId);
     }
+
+    public NoticeVO selectByNoticeId2(int noticeId) {
+        System.out.println("========NoticeServiceSelectByNoticeId2=======" + noticeId);
+        return noticeMapper.selectByNoticeId2(noticeId);
+    }
+    public int updateNotice(NoticeVO notice) {
+        System.out.println("=======updateNoticeService======" + notice);
+        return noticeMapper.updateNotice(notice);
+    }
+
 }

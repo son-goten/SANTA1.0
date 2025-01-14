@@ -10,6 +10,8 @@ import java.util.List;
 public interface NoticeMapper {
     List<NoticeDTO> selectAllNotice();
     NoticeDTO selectByNoticeId(Integer id);
+    NoticeVO selectByNoticeId2(Integer id);
     int insertNotice(NoticeVO notice);
-    int deleteNotice(NoticeDTO notice);
+    int deleteNotice(int id);
+    int updateNotice(NoticeVO noticeVO);
 }

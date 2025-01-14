@@ -55,11 +55,33 @@ public class NoticeController {
         return "notice/noticeRead";
     }
 
-    @DeleteMapping("delete")
+    @DeleteMapping("delete/{id}")
     @ResponseBody
-    public int update(@RequestBody NoticeDTO noticeDTO) {
-        System.out.println("=========updateNotice======" + noticeDTO);
+    public int delete(@PathVariable int id) {
+        System.out.println("=====PathVariable =====" + id);
+        return noticeService.deleteNotice(id);
+    }
 
-        return noticeService.deleteNotice(noticeDTO);
+
+    @GetMapping("update")
+    public String update(int no, Model model) {
+        NoticeVO noticeVO = noticeService.selectByNoticeId2(no);
+        System.out.println("updateNotice========"+noticeVO);
+
+        model.addAttribute("noticeVO", noticeVO);
+        return "notice/noticeUpdate";
+    }
+
+    @PostMapping("noticeUpdate")
+    public String noticeUpdate(NoticeVO noticeVO) {
+        System.out.println("=========작성된 글 저장 요청 ========");
+        System.out.println("NoticeVO = " + noticeVO);
+
+        int result = noticeService.updateNotice(noticeVO);
+        if(result > 0) {
+            return "redirect:/notice/notice";
+        } else {
+            return "error/error";
+        }
     }
 }

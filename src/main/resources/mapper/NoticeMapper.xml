@@ -18,10 +18,23 @@
         <result property="updatedAt" column="updated_at"/>
     </resultMap>
 
+    <resultMap id="selectNoticeById2" type="com.example.santa.notice.vo.NoticeVO">
+        <result property="noticeId" column="notice_id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="categoryId" column="category_id"/>
+    </resultMap>
+
     <insert id="insertNotice">
         INSERT INTO Notice (author_id, title, content, category_id)
         VALUES (1, #{title}, #{content}, #{categoryId});
     </insert>
+
+    <update id="updateNotice">
+        UPDATE notice
+        SET title = #{title}, content = #{content}, category_id = #{categoryId}
+        WHERE notice_id = #{noticeId};
+    </update>
 
     <delete id="deleteNotice">
         DELETE FROM Notice
@@ -36,6 +49,7 @@
                DATE_FORMAT(n.updated_at, '%Y-%m-%d') AS updated_at
         FROM Notice n
         JOIN notice_categories nc ON n.category_id = nc.category_id
+        ORDER BY nc.name ASC, n.updated_at DESC;
     </select>
 
     <select id="selectByNoticeId" resultType="com.example.santa.notice.vo.NoticeDTO"
@@ -47,6 +61,13 @@
                DATE_FORMAT(n.updated_at, '%Y-%m-%d') AS updated_at
         FROM Notice n
         JOIN notice_categories nc ON n.category_id = nc.category_id
+        WHERE n.notice_id = #{noticeId}
+    </select>
+
+    <select id="selectByNoticeId2" resultType="com.example.santa.notice.vo.NoticeVO"
+        resultMap="selectNoticeById2">
+        SELECT n.notice_id, n.title, n.content, n.category_id
+        FROM Notice n
         WHERE n.notice_id = #{noticeId}
     </select>
 </mapper>

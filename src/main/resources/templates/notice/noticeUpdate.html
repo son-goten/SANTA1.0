@@ -2,23 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <body class="bg-light">
+
 <div class="page-inner" layout:fragment="content">
 <header class="bg-success text-white text-center py-4">
     <h1 class="mb-0"><i class="fas fa-tree"></i> 공지사항 글 작성 <i class="fas fa-tree"></i></h1>
     <p class="mb-0">공지사항 유의해서 작성해주세요!</p>
 </header>
-
 <main class="container my-5">
     <div class="card shadow-sm">
         <div class="card-header bg-danger text-white">
-            <h2 class="h5 mb-0"><i class="fas fa-edit"></i> 새 글 작성</h2>
+            <h2 class="h5 mb-0"><i class="fas fa-edit" ></i> 새 글 작성</h2>
         </div>
         <div class="card-body">
-            <form action="/notice/noticeCreate" method="post">
+            <form action="/notice/noticeUpdate" method="post">
+                <input type="hidden" name="noticeId" th:value="${noticeVO.noticeId}">
                 <!-- 제목 -->
                 <div class="mb-3">
                     <label for="title" class="form-label">제목 <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요" required>
+                    <input type="text" th:value="${noticeVO.title}" class="form-control" id="title" name="title" placeholder="제목을 입력하세요" required>
                 </div>
 
                 <!-- 작성자 -->
@@ -30,20 +31,21 @@
                 <!-- 내용 -->
                 <div class="mb-3">
                     <label for="content" class="form-label">내용 <span class="text-danger">*</span></label>
-                    <textarea class="form-control" id="content" name="content" rows="8" placeholder="내용을 입력하세요" required></textarea>
+                    <textarea th:text="${noticeVO.content}" class="form-control" id="content" name="content" rows="8" placeholder="내용을 입력하세요"
+                              required></textarea>
                 </div>
 
                 <!-- 카테고리 -->
                 <div class="mb-3">
                     <label for="categoryId" class="form-label">카테고리</label>
-                    <select class="form-select" id="categoryId" name="categoryId" required>
-                        <option value="1" selected>공지사항</option>
-                        <option value="2">업데이트/새로운 기능</option>
-                        <option value="3">이벤트</option>
-                        <option value="4">교육/가이드</option>
-                        <option value="5">운영안내</option>
-                        <option value="6">긴급공지</option>
-                        <option value="7">보안/안전</option>
+                    <select class="form-select" id="categoryId" name="categoryId" th:value="${noticeVO.categoryId}" required>
+                        <option value="1" th:selected="${noticeVO.categoryId}=='1'">공지사항</option>
+                        <option value="2" th:selected="${noticeVO.categoryId}=='2'">업데이트/새로운 기능</option>
+                        <option value="3" th:selected="${noticeVO.categoryId}=='3'">이벤트</option>
+                        <option value="4" th:selected="${noticeVO.categoryId}=='4'">교육/가이드</option>
+                        <option value="5" th:selected="${noticeVO.categoryId}=='5'">운영안내</option>
+                        <option value="6" th:selected="${noticeVO.categoryId}=='6'">긴급공지</option>
+                        <option value="7" th:selected="${noticeVO.categoryId}=='7'">보안/안전</option>
                     </select>
                 </div>
 
