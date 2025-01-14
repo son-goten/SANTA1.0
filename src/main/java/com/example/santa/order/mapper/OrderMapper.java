@@ -44,8 +44,4 @@ public interface OrderMapper {
     // 승인 대기 주문, 주문 지점 검색
     List<OrderDTO> searchByPendingBranchName(@Param("branchName") String branchName);
 
-    //*************************************************
-    //******************** 주문 통계 ********************
-    //*************************************************
-
 }

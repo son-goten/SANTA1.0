@@ -164,11 +164,4 @@ public class OrderController {
         return list;
     }
 
-    //*************************************************
-    //******************** 주문 통계 ********************
-    //*************************************************
-    @GetMapping("statistics")
-    public String statistics() {
-        return "order/statistics";
-    }
 }
