@@ -42,7 +42,7 @@
 
                 <!-- Logo image -->
                 <!-- login ok -->
-                <a href="/home" class="logo">
+                <a href="/home/home" class="logo">
                     <img
                             src="/assets/img/santa/santaLogo.png"
                             alt="navbar brand"
@@ -74,7 +74,7 @@
                 <ul class="nav nav-secondary">
                     <li class="nav-item">
                         <a
-                                href="/home"
+                                href="/home/home"
                                 class="collapsed"
                                 aria-expanded="false"
                         >
@@ -225,11 +225,11 @@
                                         <span class="sub-item">직원 관리</span>
                                     </a>
                                 </li>
-                                <li>
-                                    <a class="sidebar-link" href="">
-                                        <span class="sub-item">로그 관리</span>
-                                    </a>
-                                </li>
+<!--                                <li>-->
+<!--                                    <a class="sidebar-link" href="">-->
+<!--                                        <span class="sub-item">로그 관리</span>-->
+<!--                                    </a>-->
+<!--                                </li>-->
                             </ul>
                         </div>
                     </li>
@@ -247,7 +247,7 @@
                 <!-- Logo Header -->
                 <!-- 화면 크기 줄어들었을 시의 Header -->
                 <div class="logo-header" data-background-color="red">
-                    <a href="/home" class="logo">
+                    <a href="/home/home" class="logo">
                         <img
                                 src="/assets/img/santa/santaLogo.png"
                                 alt="navbar brand"
@@ -451,17 +451,31 @@
         <footer class="footer" layout:fragment="footer">
             <div class="container-fluid d-flex justify-content-between">
                 <nav class="pull-left">
-                    <ul class="nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="http://www.themekita.com">
-                                ThemeKita
+                    <ul class="nav justify-content-center">
+                        <li class="nav-item mx-2">
+                            <a class="text-black text-decoration-none" href="https://github.com/team-member1" target="_blank" rel="noopener">
+                                <i class="fab fa-github"></i> 김근영
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"> Help </a>
+                        <li class="nav-item mx-2">
+                            <a class="text-black text-decoration-none" href="https://github.com/team-member2" target="_blank" rel="noopener">
+                                <i class="fab fa-github"></i> 김주일
+                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#"> Licenses </a>
+                        <li class="nav-item mx-2">
+                            <a class="text-black text-decoration-none" href="https://github.com/Hyun7en/SANTA1.0" target="_blank" rel="noopener">
+                                <i class="fab fa-github"></i> 고병현
+                            </a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="text-black text-decoration-none" href="https://github.com/team-member4" target="_blank" rel="noopener">
+                                <i class="fab fa-github"></i> 김희재
+                            </a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="text-black text-decoration-none" href="https://github.com/team-member5" target="_blank" rel="noopener">
+                                <i class="fab fa-github"></i> 박상협
+                            </a>
                         </li>
                     </ul>
                 </nav>
@@ -479,6 +493,9 @@
 <script src="/assets/js/core/jquery-3.7.1.min.js"></script>
 <script src="/assets/js/core/popper.min.js"></script>
 <script src="/assets/js/core/bootstrap.min.js"></script>
+
+<!-- Tmap API -->
+<script th:src="'https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey='+${tmapApiKey}"></script>
 
 <!-- axios 비동기 통신용 -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -564,7 +581,6 @@
 
 
 </script>
-
 <!-- Core theme JS-->
 <th:block layout:fragment="script">
 
