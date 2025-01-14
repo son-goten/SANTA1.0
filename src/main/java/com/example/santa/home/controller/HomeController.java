@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class HomeController {
 
     @GetMapping("/home")
-    public String homePage() {
+    public String home() {
         return "home/home"; // home.html 파일을 렌더링
     }
 }
