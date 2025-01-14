@@ -164,4 +164,12 @@ public class OrderController {
         return list;
     }
 
+    @GetMapping("test2")
+    public String home(){
+        return "order/test2";
+    }
+
+//refactoring 방향성
+// --> 1. 검색 통합
+// --> 2. 주문 일자 검색시 DTO 쓰기
 }
