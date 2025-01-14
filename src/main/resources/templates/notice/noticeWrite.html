@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<body class="bg-light">
+<div class="page-inner" layout:fragment="content">
+<header class="bg-success text-white text-center py-4">
+    <h1 class="mb-0"><i class="fas fa-tree"></i> 공지사항 글 작성 <i class="fas fa-tree"></i></h1>
+    <p class="mb-0">공지사항 유의해서 작성해주세요!</p>
+</header>
+
+<main class="container my-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-danger text-white">
+            <h2 class="h5 mb-0"><i class="fas fa-edit"></i> 새 글 작성</h2>
+        </div>
+        <div class="card-body">
+            <form action="/notice/noticeCreate" method="post">
+                <!-- 제목 -->
+                <div class="mb-3">
+                    <label for="title" class="form-label">제목 <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요" required>
+                </div>
+
+                <!-- 작성자 -->
+                <div class="mb-3">
+                    <label class="form-label">작성자 <span class="text-danger"></span></label>
+                    <p class="mb-0">김희재</p>
+                </div>
+
+                <!-- 내용 -->
+                <div class="mb-3">
+                    <label for="content" class="form-label">내용 <span class="text-danger">*</span></label>
+                    <textarea class="form-control" id="content" name="content" rows="8" placeholder="내용을 입력하세요" required></textarea>
+                </div>
+
+                <!-- 카테고리 -->
+                <div class="mb-3">
+                    <label for="categoryId" class="form-label">카테고리</label>
+                    <select class="form-select" id="categoryId" name="categoryId" required>
+                        <option value="1" selected>공지사항</option>
+                        <option value="2">업데이트/새로운 기능</option>
+                        <option value="3">이벤트</option>
+                        <option value="4">교육/가이드</option>
+                        <option value="5">운영안내</option>
+                        <option value="6">긴급공지</option>
+                        <option value="7">보안/안전</option>
+                    </select>
+                </div>
+
+                <!-- 파일 첨부 -->
+                <div class="mb-3">
+                    <label for="file" class="form-label">파일 첨부</label>
+                    <input class="form-control" type="file" id="file">
+                </div>
+
+                <!-- 버튼 -->
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> 저장하기
+                    </button>
+                    <button type="reset" class="btn btn-secondary">
+                        <i class="fas fa-undo"></i> 취소
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer class="bg-dark text-white text-center py-3">
+    <p class="mb-0">&copy; 2025 SANTA 게시판 | 즐거운 하루 보내세요!</p>
+</footer>
+
+</div>
+</body>
+</html>
