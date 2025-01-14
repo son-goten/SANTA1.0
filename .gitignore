@@ -39,3 +39,4 @@ out/
 ### Spring ###
 .properties
 .sql
+.log
